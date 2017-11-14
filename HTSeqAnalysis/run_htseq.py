@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import os
+from HTSeqAnalysis.pbsjob import PBSJob
 
 df = pd.read_csv('impulsivity_samplenames.csv', header=None)
 samplenames = sorted(list(df[0]))
