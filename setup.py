@@ -44,7 +44,7 @@ setup(
     entry_points={
         'console_scripts': ['']
     },
-    zip_safe=False,
-    test_suite='nose.collector',
-    tests_require=['nose']
+    zip_safe=False
+#    test_suite='nose.collector',
+#    tests_require=['nose']
 )
