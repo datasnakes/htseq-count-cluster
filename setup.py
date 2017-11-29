@@ -42,7 +42,9 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     entry_points={
-        'console_scripts': ['']
+        'console_scripts': [
+                'htseq-count-cluster=HTSeqAnalysis.htseq_count_cluster:main'
+                ]
     },
     zip_safe=False
 #    test_suite='nose.collector',
