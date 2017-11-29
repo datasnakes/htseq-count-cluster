@@ -4,7 +4,7 @@ from datetime import datetime as d
 import sys
 import os
 
-from Datasnakes.Tools.sge import randomid
+from HTSeqAnalysis.pbsjob.pbsutils import randomid
 
 if sys.version_info.major < 3:
     raise NotImplementedError('This is not designed for the python version in your \
@@ -22,10 +22,10 @@ __DEFAULT__ = {
             'description': 'This is a default pbs job.',
             'date': d.now().strftime(_format1),
             'proj_name': 'Datasnakes-Scripts',
-            'select': '3',
-            'memgb': '6gb',
-            'cput': '72:00:00',
-            'wt': '48:00:00',
+            'select': '1',
+            'memgb': '2gb',
+            'cput': '24:00:00',
+            'wt': '12:00:00',
             'job_name': _jobname,
             'outfile': _jobname + '.o',
             'errfile': _jobname + '.e',

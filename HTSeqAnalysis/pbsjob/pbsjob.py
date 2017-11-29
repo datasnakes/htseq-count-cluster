@@ -1,13 +1,12 @@
 from subprocess import run, CalledProcessError, PIPE
 import os
 from pkg_resources import resource_filename
-from time import sleep
 
 from HTSeqAnalysis.logger import Logger
-from HTSeqAnalysis.pbsjob import basejobids, writecodefile, import_temp, file2str
+from HTSeqAnalysis.pbsjob.pbsutils import basejobids, writecodefile, import_temp, file2str
 from HTSeqAnalysis.pbsjob.pbsconfig import __DEFAULT__
 from HTSeqAnalysis import pbsjob
-from HTSeqAnalysis.pbsjob import Qstat
+from HTSeqAnalysis.pbsjob.qstat import Qstat
 
 
 class BasePBSJob(object):
@@ -40,26 +39,6 @@ class BasePBSJob(object):
         os.remove(jobname + '.py')
         self.sgejob_log.warning('%s.py has been deleted.' % jobname)
 
-    def wait_on_job_completion(self, job_id):
-        """Use Qstat to monitor your job."""
-        # TODO Allow either slack notifications or email or text.
-        qwatch = Qstat().watch(job_id)
-        if qwatch == 'Job id not found.':
-            self.sgejob_log.info('%s has finished.' % job_id)
-            sleep(30)
-        elif qwatch == 'Waiting for %s to start running.' % job_id:
-            self.sgejob_log.info('%s is queued to run.' % job_id)
-            self.sgejob_log.info('Waiting for %s to start.' % job_id)
-            sleep(30)
-            self.wait_on_job_completion(job_id)
-        elif qwatch == 'Waiting for %s to finish running.' % job_id:
-            self.sgejob_log.info('%s is running.' % job_id)
-            self.sgejob_log.info('Waiting for %s to finish.' % job_id)
-            sleep(30)
-            self.wait_on_job_completion(job_id)
-        else:
-            self.wait_on_job_completion(job_id)
-
 
 class PBSJob(BasePBSJob):
     """Create a qsub/pbs job & script for the job to execute."""
@@ -88,7 +67,7 @@ class PBSJob(BasePBSJob):
 
         return self.default_job_attributes
 
-    def submit(self, code, cleanup=True, default=True):
+    def submit_code(self, code, cleanup=True, default=True):
         """Create and submit a qsub job.
 
         Submit python code."""
@@ -136,8 +115,50 @@ class PBSJob(BasePBSJob):
                 submitted_jobid = cmd_status.stdout.decode('utf-8')
                 self.sgejob_log.info(self.jobname + ' was submitted.')
                 self.sgejob_log.info('Your job id is: %s' % submitted_jobid)
-                self.wait_on_job_completion(submitted_jobid)
-                self._cleanup(self.jobname)
+                return submitted_jobid
+                if cleanup:
+                    self._cleanup(self.jobname)
 
             else:  # Unsuccessful. Stdout will be '1'
                 self.sgejob_log.error('PBS job not submitted.')
+
+    def submit_cmd(self, cmd, cleanup=True):
+        """Create and submit a qsub job.
+
+        Submit python code."""
+
+        cmddict = {'cmd': cmd}
+        self.attributes.update(cmddict)
+
+        # Create the pbs script from the template or dict
+        pbstemp = import_temp(self.temp_pbs)
+        pbsfilename = self.jobname + '.pbs'
+
+        with open(pbsfilename, 'w') as pbsfile:
+            pbsfile.write(pbstemp.substitute(self.attributes))
+            pbsfile.close()
+        self.sgejob_log.info('%s has been created.' % pbsfilename)
+
+        # Submit the job using qsub
+        try:
+            cmd = ['qsub ' + self.jobname + '.pbs']  # this is the command
+            # Shell MUST be True
+            cmd_status = run(cmd, stdout=PIPE, stderr=PIPE, shell=True, check=True)
+        except CalledProcessError as err:
+            self.sgejob_log.error(err.stderr.decode('utf-8'))
+            if cleanup:
+                self._cleanup(self.jobname)
+        else:
+            if cmd_status.returncode == 0:  # Command was successful.
+                # The cmd_status has stdout that must be decoded.
+                # When a qsub job is submitted, the stdout is the job id.
+                submitted_jobid = cmd_status.stdout.decode('utf-8')
+                self.sgejob_log.info(self.jobname + ' was submitted.')
+                self.sgejob_log.info('Your job id is: %s' % submitted_jobid)
+                return submitted_jobid
+                if cleanup:
+                    self._cleanup(self.jobname)
+
+            else:  # Unsuccessful. Stdout will be '1'
+                self.sgejob_log.error('PBS job not submitted.')
+
