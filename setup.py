@@ -40,6 +40,7 @@ setup(
         ],
     # Packages will be automatically found if not in this list.
     packages=find_packages(),
+    package_data={'HTSeqAnalysis': ['pbsjob/temp.pbs']},
     include_package_data=True,
     entry_points={
         'console_scripts': [
