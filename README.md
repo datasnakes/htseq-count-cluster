@@ -1,5 +1,5 @@
 # htseq-count-cluster
-A cli wrapper for running htseq's `htseq-count` on a cluster.
+A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htseq-count` on a cluster.
 
 ## Install
 
@@ -10,9 +10,10 @@ or
 `pip install --user git+https://github.com/datasnakes/htseq-analysis-scripts.git`
 
 ## Features
-- For use with large datasets (ours used 120 different human samples)
+- For use with large datasets (we've previously used a dataset of 120 different human samples)
 - For use with SGE/SGI cluster systems
 - Submits multiple jobs
+- Command line interface/script
 - Merges counts files into one counts table/csv file
 
 
