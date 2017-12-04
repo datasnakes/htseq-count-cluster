@@ -24,7 +24,7 @@ or
 ## Maintainers
 Shaurita Hutchins | [@sdhutchins](https://github.com/sdhutchins) | [✉](mailto:sdhutchins@outlook.com)
 
-Rob Gilmore | [@grabear]: https://github.com/grabear | [✉](mailto:robgilmore127@gmail.com)
+Rob Gilmore | [@grabear](https://github.com/grabear) | [✉](mailto:robgilmore127@gmail.com)
 
 
 Please feel free to [open an issue](https://github.com/datasnakes/htseq-count-cluster/issues/new) if you have a question/feedback/problem
