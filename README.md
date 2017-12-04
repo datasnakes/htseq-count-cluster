@@ -17,12 +17,13 @@ or
 
 
 ## ToDo
-- [ ] Monitor Jobs  
+- [ ] Monitor Jobs
 - [ ] Enhance wrapper input for other use cases.
 
 
 ## Maintainers
 Shaurita Hutchins | [@sdhutchins](https://github.com/sdhutchins) | [✉](mailto:sdhutchins@outlook.com)
+
 Rob Gilmore | [@grabear]: https://github.com/grabear | [✉](mailto:robgilmore127@gmail.com)
 
 
