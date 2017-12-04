@@ -17,8 +17,8 @@ or
 
 
 ## ToDo
-[ ] - Monitor Jobs
-[ ] - Enhance wrapper input for other use cases.
+- [ ] Monitor Jobs  
+- [ ] Enhance wrapper input for other use cases.
 
 
 ## Maintainers
