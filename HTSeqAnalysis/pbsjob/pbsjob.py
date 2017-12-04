@@ -3,7 +3,8 @@ import os
 from pkg_resources import resource_filename
 
 from HTSeqAnalysis.logger import Logger
-from HTSeqAnalysis.pbsjob.pbsutils import basejobids, writecodefile, import_temp, file2str
+from HTSeqAnalysis.pbsjob.pbsutils import (basejobids, writecodefile,
+                                           import_temp, file2str)
 from HTSeqAnalysis.pbsjob.pbsconfig import __DEFAULT__
 from HTSeqAnalysis import pbsjob
 from HTSeqAnalysis.pbsjob.qstat import Qstat

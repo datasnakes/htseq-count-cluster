@@ -15,13 +15,13 @@ elif sys.version_info.major >= 3 and sys.version_info.minor < 5:
 
 _format1 = '%a %b %d %I:%M:%S %p %Y'
 
-_jobname = 'impulsivity_{}'.format(randomid(length=4))
+_jobname = 'htseq_{}'.format(randomid(length=4))
 
 __DEFAULT__ = {
             'author': getpass.getuser(),
             'description': 'This is a default pbs job.',
             'date': d.now().strftime(_format1),
-            'proj_name': 'Datasnakes-Scripts',
+            'proj_name': 'htseq-cluster',
             'select': '1',
             'memgb': '2gb',
             'cput': '24:00:00',
