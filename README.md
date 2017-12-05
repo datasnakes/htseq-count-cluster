@@ -13,7 +13,7 @@ A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htse
 
 
 ### Command-line options
-```bash
+```
 usage: htseq_count_cluster.py [-h] [-p INPATH] [-f INFILE] [-g GTF]
                               [-o OUTPATH] [-e EMAIL]
 
