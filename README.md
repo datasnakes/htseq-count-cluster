@@ -49,8 +49,9 @@ shell without the program ending and utilize another shell.
 
 
 ## ToDo
-- [ ] Monitor Jobs
+- [ ] Monitor jobs.
 - [ ] Enhance wrapper input for other use cases.
+- [ ] Add example data.
 
 
 ## Maintainers
