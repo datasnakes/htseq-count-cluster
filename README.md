@@ -13,9 +13,17 @@ A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htse
 
 
 ### Command-line options
+| Argument |                                                                             Description                                                                             | Required |
+|:--------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------:|
+|   `-p`   | This is the path of your .bam files.  Presently, this script looks for a folder that is the sample name and searches for an accepted_hits.bam file (tophat output). |    Yes   |
+|   `-i`   |                                                     You should have a csv file list of your samples (no header).                                                    |    Yes   |
+|   `-g`   |                                                           This should be the path to your genes.gtf file.                                                           |    Yes   |
+|   `-o`   |                                                  This should be an existing directory for your output counts files.                                                 |    Yes   |
+|   `-e`   |                                        Email yourself when the script completes.  This can be left empty or not used at all.                                        |    No    |
+
 ```
-usage: htseq_count_cluster.py [-h] [-p INPATH] [-f INFILE] [-g GTF]
-                              [-o OUTPATH] [-e EMAIL]
+usage: htseq_count_cluster.py [-h] -p INPATH -f INFILE -g GTF -o OUTPATH
+                              [-e EMAIL]
 
 This is a command line wrapper around htseq-count.
 
@@ -33,6 +41,7 @@ optional arguments:
                         Email address to send script completion to.
 
 *Ensure that htseq-count is in your path.
+
 
 ```
 

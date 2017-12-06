@@ -54,15 +54,11 @@ if __name__ == '__main__':
                                      description=textwrap.dedent('''\
                                     This is a command line wrapper around htseq-count.
                                     '''))
-    parser.add_argument('-p', '--inpath', help='Path of your samples/sample folders.')
-    parser.add_argument('-f', '--infile',
-                        help='Name or path to your input csv file.')
-    parser.add_argument('-g', '--gtf',
-                        help='Name or path to your gtf/gff file.')
-    parser.add_argument('-o', '--outpath',
-                        help='Directory of your output counts file. The counts file will be named.')
-    parser.add_argument('-e', '--email',
-                        help='Email address to send script completion to.')
+    parser.add_argument('-p', '--inpath', help='Path of your samples/sample folders.', required=True)
+    parser.add_argument('-f', '--infile', help='Name or path to your input csv file.', required=True)
+    parser.add_argument('-g', '--gtf', help='Name or path to your gtf/gff file.', required=True)
+    parser.add_argument('-o', '--outpath', help='Directory of your output counts file. The counts file will be named.', required=True)
+    parser.add_argument('-e', '--email', help='Email address to send script completion to.')
 
     args = parser.parse_args()
     main(args.inpath, args.infile, args.gtf, args.outpath, args.email)
