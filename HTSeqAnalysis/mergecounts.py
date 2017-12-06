@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import os
-
+import argparse
+import textwrap
 
 def merge_counts_tables(filesdirectory):
     """Merge multiple counts tables into 1 counts table.
@@ -32,3 +33,23 @@ def merge_counts_tables(filesdirectory):
     final_df = pd.concat([genes_df, samples_df], axis=1)
 
     final_df.to_csv('merged_counts_table.csv', index=False)
+
+
+def main(directory):
+    merge_counts_tables(filesdirectory=directory)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=textwrap.dedent('''\
+                                    Merge multiple counts tables into 1 counts .csv file.
+
+                                    Your output file will be named:  merged_counts_table.csv
+                                    '''))
+    parser.add_argument('-d', '--directory',
+                        help='Path to folder of counts files.',
+                        required=True)
+
+    args = parser.parse_args()
+    main(args.directory)
+
