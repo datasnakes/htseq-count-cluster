@@ -21,6 +21,7 @@ A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htse
 |   `-o`   |                                                  This should be an existing directory for your output counts files.                                                 |    Yes   |
 |   `-e`   |                                        Email yourself when the script completes.  This can be left empty or not used at all.                                        |    No    |
 
+#### Help message output
 ```
 usage: htseq_count_cluster.py [-h] -p INPATH -f INFILE -g GTF -o OUTPATH
                               [-e EMAIL]
@@ -60,6 +61,26 @@ shell without the program ending and utilize another shell.
 
 
 #### Merge output counts files
+In order to prep your data for `DESeq2` or `edgeR`, it's best to have 1 merged
+counts file.
+```bash
+python mergecounts.py -d path/to/cluster-output/
+```
+
+##### Help message for mergecounts.py
+
+```
+usage: mergecounts.py [-h] -d DIRECTORY
+
+Merge multiple counts tables into 1 counts .csv file.
+
+Your output file will be named:  merged_counts_table.csv
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DIRECTORY, --directory DIRECTORY
+                        Path to folder of counts files.
+```
 
 ## ToDo
 - [ ] Monitor jobs.
