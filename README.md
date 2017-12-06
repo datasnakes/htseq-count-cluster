@@ -36,6 +36,17 @@ optional arguments:
 
 ```
 
+### Examples
+
+```bash
+python htseq_count_cluster.py -p path/to/samples/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
+```
+This script uses logzero so there will be color coded logging information to your shell.
+
+A common linux practice is to use `screen` to create a new shell and run a program
+so that if it does produce output to the stdout/shell, the user can exit that particular
+shell without the program ending and utilize another shell.
+
 
 ## ToDo
 - [ ] Monitor Jobs
@@ -48,5 +59,6 @@ Shaurita Hutchins | [@sdhutchins](https://github.com/sdhutchins) | [✉](mailto:
 Rob Gilmore | [@grabear](https://github.com/grabear) | [✉](mailto:robgilmore127@gmail.com)
 
 
+## Help
 Please feel free to [open an issue](https://github.com/datasnakes/htseq-count-cluster/issues/new) if you have a question/feedback/problem
 or [submit a pull request](https://github.com/datasnakes/htseq-count-cluster/compare) to add a feature/refactor/etc. to this project.
