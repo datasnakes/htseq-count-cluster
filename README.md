@@ -10,13 +10,13 @@ A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htse
 - Submits multiple jobs
 - Command line interface/script
 - Merges counts files into one counts table/csv file
-
+- Uses `accepted_hits.bam` file output of `tophat`
 
 ### Command-line options
 | Argument |                                                                             Description                                                                             | Required |
 |:--------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------:|
 |   `-p`   | This is the path of your .bam files.  Presently, this script looks for a folder that is the sample name and searches for an accepted_hits.bam file (tophat output). |    Yes   |
-|   `-i`   |                                                     You should have a csv file list of your samples (no header).                                                    |    Yes   |
+|   `-i`   |                                                     You should have a csv file list of your samples or folder names (no header).                                                    |    Yes   |
 |   `-g`   |                                                           This should be the path to your genes.gtf file.                                                           |    Yes   |
 |   `-o`   |                                                  This should be an existing directory for your output counts files.                                                 |    Yes   |
 |   `-e`   |                                        Email yourself when the script completes.  This can be left empty or not used at all.                                        |    No    |
@@ -47,6 +47,8 @@ optional arguments:
 
 ### Examples
 
+#### Run htseq_count_cluster.py
+
 ```bash
 python htseq_count_cluster.py -p path/to/samples/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
 ```
@@ -56,6 +58,8 @@ A common linux practice is to use `screen` to create a new shell and run a progr
 so that if it does produce output to the stdout/shell, the user can exit that particular
 shell without the program ending and utilize another shell.
 
+
+#### Merge output counts files
 
 ## ToDo
 - [ ] Monitor jobs.
