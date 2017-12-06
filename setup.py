@@ -47,7 +47,7 @@ setup(
                 'htseq-count-cluster=HTSeqAnalysis.htseq_count_cluster:main'
                 ]
     },
-    zip_safe=False
-#    test_suite='nose.collector',
-#    tests_require=['nose']
+    zip_safe=False,
+    test_suite='nose.collector',
+    tests_require=['nose']
 )
