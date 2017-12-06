@@ -24,16 +24,16 @@ optional arguments:
   -p INPATH, --inpath INPATH
                         Path of your samples/sample folders.
   -f INFILE, --infile INFILE
-                        Name and path of your input csv file.
-  -g GTF, --gtf GTF     Name and path of your input csv file.
+                        Name or path to your input csv file.
+  -g GTF, --gtf GTF     Name or path to your gtf/gff file.
   -o OUTPATH, --outpath OUTPATH
                         Directory of your output counts file. The counts file
                         will be named.
   -e EMAIL, --email EMAIL
-                        Directory of your output counts file. The counts file
-                        will be named.
+                        Email address to send script completion to.
 
-Ensure that htseq-count is in your path.
+*Ensure that htseq-count is in your path.
+
 ```
 
 

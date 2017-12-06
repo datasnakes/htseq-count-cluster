@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-from time import sleep
 import argparse
 import textwrap
 
@@ -17,6 +16,7 @@ def call_htseq(infile, gtf, outfile):
     cmd = 'htseq-count -f bam -s no {} {} -o {}_htseq.out'.format(infile, gtf, outfile)
     return cmd
 
+
 def htseq_jobber(input_path, inputlist, gtf, outpath, email):
     jobids = []
     for item in inputlist:
@@ -29,6 +29,7 @@ def htseq_jobber(input_path, inputlist, gtf, outpath, email):
         jobids.append(jobid)
     return jobids
 
+
 def check_job_status(job_id, email=True):
     """Use Qstat to monitor your job status."""
     # TODO Allow either slack notifications or email or text.
@@ -40,26 +41,28 @@ def check_job_status(job_id, email=True):
     elif qwatch == 'Waiting for %s to finish running.' % job_id:
         return 'Running'
 
+
 def main(folderpath, samplescsv, gtf, outpath, email):
     samplenames = csvtolist(samplescsv)
-    htseq_jobber(input_path=folderpath, inputlist=samplenames, gtf=gtf, outpath=outpath, email=email)
+    htseq_jobber(input_path=folderpath, inputlist=samplenames, gtf=gtf,
+                 outpath=outpath, email=email)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
-                                     epilog="Ensure that htseq-count is in your path.",
+                                     epilog="*Ensure that htseq-count is in your path.",
                                      description=textwrap.dedent('''\
                                     This is a command line wrapper around htseq-count.
                                     '''))
     parser.add_argument('-p', '--inpath', help='Path of your samples/sample folders.')
     parser.add_argument('-f', '--infile',
-                        help='Name and path of your input csv file.')
+                        help='Name or path to your input csv file.')
     parser.add_argument('-g', '--gtf',
-                        help='Name and path of your input csv file.')
+                        help='Name or path to your gtf/gff file.')
     parser.add_argument('-o', '--outpath',
                         help='Directory of your output counts file. The counts file will be named.')
     parser.add_argument('-e', '--email',
-                        help='Directory of your output counts file. The counts file will be named.')
+                        help='Email address to send script completion to.')
 
     args = parser.parse_args()
     main(args.inpath, args.infile, args.gtf, args.outpath, args.email)
