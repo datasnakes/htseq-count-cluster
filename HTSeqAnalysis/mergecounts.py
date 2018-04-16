@@ -36,6 +36,7 @@ def merge_counts_tables(filesdirectory):
 
 
 def main(directory):
+    """Run the merge_counts_tables function."""
     merge_counts_tables(filesdirectory=directory)
 
 

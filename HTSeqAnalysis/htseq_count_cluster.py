@@ -13,11 +13,13 @@ htseq_log = Logger().default(logname="htseq count cluster", logfile=None)
 
 
 def call_htseq(infile, gtf, outfile):
+    """Call the htseq-count script."""
     cmd = 'htseq-count -f bam -s no {} {} -o {}_htseq.out'.format(infile, gtf, outfile)
     return cmd
 
 
 def htseq_jobber(input_path, inputlist, gtf, outpath, email):
+    """Create multiple pbs jobs based on input list of files."""
     jobids = []
     for item in inputlist:
         htseqjob = PBSJob(email_address=email, base_jobname=item)
@@ -43,6 +45,7 @@ def check_job_status(job_id, email=True):
 
 
 def main(folderpath, samplescsv, gtf, outpath, email):
+    """Run the htseq_jobber function."""
     samplenames = csvtolist(samplescsv)
     htseq_jobber(input_path=folderpath, inputlist=samplenames, gtf=gtf,
                  outpath=outpath, email=email)
