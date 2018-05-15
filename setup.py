@@ -22,26 +22,27 @@ def readme():
 setup(
     name=name,
     author='Shaurita Hutchins & Robert Gilmore',
+    author_email='datasnakes@gmail.com',
     description="A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster.",
     version='0.1',
     long_description=readme(),
     url='https://github.com/datasnakes/htseq-count-cluster',
     license='MIT',
     keywords='science lab pyschiatry rnaseq htseq',
+    platform='Linux',
     classifiers=[
-        'Programming Language :: Python :: 3',
-        'Operating System :: POSIX :: Linux',
-        'Operating System :: Unix',
         'Natural Language :: English',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7'
         ],
     # Packages will be automatically found if not in this list.
     packages=find_packages(),
-    package_data={'HTSeqAnalysis': ['pbsjob/temp.pbs']},
     include_package_data=True,
+    package_data={
+            'HTSeqCountCluster': ['pbsjob/*.pbs'],
+            },
     entry_points={
         'console_scripts': [
                 'htseq-count-cluster=HTSeqCountCluster.htseq_count_cluster:main',
