@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """ This is the setup.py script for setting up the package and fulfilling any
 necessary requirements.
 """
@@ -24,18 +23,23 @@ setup(
     author='Shaurita Hutchins & Robert Gilmore',
     author_email='datasnakes@gmail.com',
     description="A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster.",
-    version='1.1',
+    version='1.2',
     long_description=readme(),
+    long_description_content_type='text/markdown',
     url='https://github.com/datasnakes/htseq-count-cluster',
     license='MIT',
     keywords='science lab pyschiatry rnaseq htseq',
     classifiers=[
+        'Development Status :: 5 - Production/Stable',
         'Natural Language :: English',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7'
         ],
+    project_urls={
+            'Documentation': 'https://tinyurl.com/yb7kz7zz',
+            },
     # Packages will be automatically found if not in this list.
     packages=find_packages(),
     include_package_data=True,
