@@ -44,7 +44,7 @@ def check_job_status(job_id, email=True):
         return 'Running'
 
 
-def main(folderpath, samplescsv, gtf, outpath, email):
+def main():
     """Run the htseq_jobber function."""
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      epilog="*Ensure that htseq-count is in your path.",
@@ -62,6 +62,7 @@ def main(folderpath, samplescsv, gtf, outpath, email):
     args = parser.parse_args()
 
     samplenames = csvtolist(args.infile)
+
     htseq_jobber(input_path=args.inpath, inputlist=samplenames, gtf=args.gtf,
                  outpath=args.outpath, email=args.email)
 
