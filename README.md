@@ -19,7 +19,17 @@ View [documentation](https://tinyurl.com/yb7kz7zz).
 - Merges counts files into one counts table/csv file
 - Uses `accepted_hits.bam` file output of `tophat`
 
-### Command-line options
+### Examples
+
+#### Run htseq-count-cluster
+
+After generating bam output files from tophat, instead of using HTSeq's htseq count, you
+can use our `htseq-count-cluster` script. This script is intended for use with
+clusters that are using pbs (qsub) for job monitoring.
+
+```bash
+htseq-count-cluster -p path/to/bam-files/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
+```
 
 | Argument |                                                                             Description                                                                             | Required |
 |:--------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------:|
@@ -27,12 +37,18 @@ View [documentation](https://tinyurl.com/yb7kz7zz).
 |   `-i`   |                                                     You should have a csv file list of your samples or folder names (no header).                                                    |    Yes   |
 |   `-g`   |                                                           This should be the path to your genes.gtf file.                                                           |    Yes   |
 |   `-o`   |                                                  This should be an existing directory for your output counts files.                                                 |    Yes   |
-|   `-e`   |                                        Email yourself when the script completes.  This can be left empty or not used at all.                                        |    No    |
+|   `-e`   |
 
-#### Help message output
+This script uses logzero so there will be color coded logging information to your shell.
+
+A common linux practice is to use `screen` to create a new shell and run a program
+so that if it does produce output to the stdout/shell, the user can exit that particular
+shell without the program ending and utilize another shell.
+
+##### Help message output for `htseq-count-cluster`
 
 ```
-usage: htseq_count_cluster.py [-h] -p INPATH -f INFILE -g GTF -o OUTPATH
+usage: htseq-count-cluster [-h] -p INPATH -f INFILE -g GTF -o OUTPATH
                               [-e EMAIL]
 
 This is a command line wrapper around htseq-count.
@@ -55,23 +71,6 @@ optional arguments:
 
 ```
 
-### Examples
-
-#### Run htseq-count-cluster
-
-After generating bam output files from tophat, instead of using HTSeq's htseq count, you
-can use our `htseq-count-cluster` script. This script is intended for use with
-clusters that are using pbs (qsub) for job monitoring.
-
-```bash
-htseq-count-cluster -p path/to/samples/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
-```
-This script uses logzero so there will be color coded logging information to your shell.
-
-A common linux practice is to use `screen` to create a new shell and run a program
-so that if it does produce output to the stdout/shell, the user can exit that particular
-shell without the program ending and utilize another shell.
-
 
 #### Merge output counts files
 
@@ -83,10 +82,10 @@ as a standalone script as it may be useful to keep those files separate.
 merge-counts -d path/to/cluster-output/
 ```
 
-##### Help message for mergecounts.py
+##### Help message for `merge-counts`
 
 ```
-usage: mergecounts.py [-h] -d DIRECTORY
+usage: merge-counts [-h] -d DIRECTORY
 
 Merge multiple counts tables into 1 counts .csv file.
 
@@ -108,7 +107,6 @@ optional arguments:
 ## Maintainers
 
 Shaurita Hutchins | [@sdhutchins](https://github.com/sdhutchins) | [✉](mailto:sdhutchins@outlook.com)
-
 Rob Gilmore | [@grabear](https://github.com/grabear) | [✉](mailto:robgilmore127@gmail.com)
 
 
