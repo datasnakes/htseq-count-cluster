@@ -37,22 +37,21 @@ def merge_counts_tables(filesdirectory):
     final_df.to_csv('merged_counts_table.csv', index=False)
 
 
-def main(directory):
+def main():
     """Run the merge_counts_tables function."""
-    merge_counts_tables(filesdirectory=directory)
-
-
-if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=textwrap.dedent('''\
-                                    Merge multiple counts tables into 1 counts .csv file.
+                                Merge multiple counts tables into 1 counts .csv file.
 
-                                    Your output file will be named:  merged_counts_table.csv
-                                    '''))
+                                Your output file will be named:  merged_counts_table.csv
+                                '''))
     parser.add_argument('-d', '--directory',
                         help='Path to folder of counts files.',
                         required=True)
-
     args = parser.parse_args()
-    main(args.directory)
 
+    merge_counts_tables(filesdirectory=args.directory)
+
+
+if __name__ == '__main__':
+    main()
