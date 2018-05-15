@@ -68,6 +68,7 @@ shell without the program ending and utilize another shell.
 
 
 #### Merge output counts files
+
 In order to prep your data for `DESeq2` or `edgeR`, it's best to have 1 merged
 counts file.
 ```bash
