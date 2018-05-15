@@ -1,10 +1,15 @@
+[![Build Status](https://travis-ci.org/datasnakes/htseq-count-cluster.svg?branch=master)](https://travis-ci.org/datasnakes/htseq-count-cluster)
+
 # htseq-count-cluster
+
 A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htseq-count` on a cluster.
 
 ## Install
+
 `pip install git+https://github.com/datasnakes/htseq-analysis-scripts.git`
 
 ## Features
+
 - For use with large datasets (we've previously used a dataset of 120 different human samples)
 - For use with SGE/SGI cluster systems
 - Submits multiple jobs
@@ -13,6 +18,7 @@ A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htse
 - Uses `accepted_hits.bam` file output of `tophat`
 
 ### Command-line options
+
 | Argument |                                                                             Description                                                                             | Required |
 |:--------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------:|
 |   `-p`   | This is the path of your .bam files.  Presently, this script looks for a folder that is the sample name and searches for an accepted_hits.bam file (tophat output). |    Yes   |
@@ -22,6 +28,7 @@ A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htse
 |   `-e`   |                                        Email yourself when the script completes.  This can be left empty or not used at all.                                        |    No    |
 
 #### Help message output
+
 ```
 usage: htseq_count_cluster.py [-h] -p INPATH -f INFILE -g GTF -o OUTPATH
                               [-e EMAIL]
@@ -83,17 +90,20 @@ optional arguments:
 ```
 
 ## ToDo
+
 - [ ] Monitor jobs.
 - [ ] Enhance wrapper input for other use cases.
 - [ ] Add example data.
 
 
 ## Maintainers
+
 Shaurita Hutchins | [@sdhutchins](https://github.com/sdhutchins) | [✉](mailto:sdhutchins@outlook.com)
 
 Rob Gilmore | [@grabear](https://github.com/grabear) | [✉](mailto:robgilmore127@gmail.com)
 
 
 ## Help
+
 Please feel free to [open an issue](https://github.com/datasnakes/htseq-count-cluster/issues/new) if you have a question/feedback/problem
 or [submit a pull request](https://github.com/datasnakes/htseq-count-cluster/compare) to add a feature/refactor/etc. to this project.

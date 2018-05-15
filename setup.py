@@ -44,7 +44,8 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-                'htseq-count-cluster=HTSeqAnalysis.htseq_count_cluster:main'
+                'htseq-count-cluster=HTSeqAnalysis.htseq_count_cluster:main',
+                'merge-counts=HTSeqAnalysis.mergecounts:main'
                 ]
     },
     zip_safe=False,
