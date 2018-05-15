@@ -10,7 +10,7 @@ from os import path
 
 # Set the home path of the setup script/package
 home = path.abspath(path.dirname(__file__))
-name = 'HTSeqAnalysis'
+name = 'HTSeqCountCluster'
 
 
 def readme():
@@ -22,12 +22,12 @@ def readme():
 setup(
     name=name,
     author='Shaurita Hutchins & Robert Gilmore',
-    description="HTSeq analysis",
+    description="A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster.",
     version='0.1',
     long_description=readme(),
-    url='https://github.com/datasnakes/impulsivity-htseq-analysis',
-    license='',
-    keywords='science lab pyschiatry rnaseq',
+    url='https://github.com/datasnakes/htseq-count-cluster',
+    license='MIT',
+    keywords='science lab pyschiatry rnaseq htseq',
     classifiers=[
         'Programming Language :: Python :: 3',
         'Operating System :: POSIX :: Linux',
@@ -44,8 +44,8 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-                'htseq-count-cluster=HTSeqAnalysis.htseq_count_cluster:main',
-                'merge-counts=HTSeqAnalysis.mergecounts:main'
+                'htseq-count-cluster=HTSeqCountCluster.htseq_count_cluster:main',
+                'merge-counts=HTSeqCountCluster.mergecounts:main'
                 ]
     },
     zip_safe=False,

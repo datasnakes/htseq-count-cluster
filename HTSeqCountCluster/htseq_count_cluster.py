@@ -3,10 +3,10 @@ import os
 import argparse
 import textwrap
 
-from HTSeqAnalysis.utils import csvtolist
-from HTSeqAnalysis.pbsjob import PBSJob
-from HTSeqAnalysis.pbsjob.qstat import Qstat
-from HTSeqAnalysis.logger import Logger
+from HTSeqCountCluster.utils import csvtolist
+from HTSeqCountCluster.pbsjob import PBSJob
+from HTSeqCountCluster.pbsjob.qstat import Qstat
+from HTSeqCountCluster.logger import Logger
 
 
 htseq_log = Logger().default(logname="htseq count cluster", logfile=None)
@@ -46,12 +46,6 @@ def check_job_status(job_id, email=True):
 
 def main(folderpath, samplescsv, gtf, outpath, email):
     """Run the htseq_jobber function."""
-    samplenames = csvtolist(samplescsv)
-    htseq_jobber(input_path=folderpath, inputlist=samplenames, gtf=gtf,
-                 outpath=outpath, email=email)
-
-
-if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      epilog="*Ensure that htseq-count is in your path.",
                                      description=textwrap.dedent('''\
@@ -60,8 +54,17 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--inpath', help='Path of your samples/sample folders.', required=True)
     parser.add_argument('-f', '--infile', help='Name or path to your input csv file.', required=True)
     parser.add_argument('-g', '--gtf', help='Name or path to your gtf/gff file.', required=True)
-    parser.add_argument('-o', '--outpath', help='Directory of your output counts file. The counts file will be named.', required=True)
+    parser.add_argument('-o', '--outpath',
+                        help='Directory of your output counts file. The counts file will be named.',
+                        required=True)
     parser.add_argument('-e', '--email', help='Email address to send script completion to.')
 
     args = parser.parse_args()
-    main(args.inpath, args.infile, args.gtf, args.outpath, args.email)
+
+    samplenames = csvtolist(args.infile)
+    htseq_jobber(input_path=args.inpath, inputlist=samplenames, gtf=args.gtf,
+                 outpath=args.outpath, email=args.email)
+
+
+if __name__ == '__main__':
+    main()

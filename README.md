@@ -4,9 +4,11 @@
 
 A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htseq-count` on a cluster.
 
+View [documentation](https://tinyurl.com/yb7kz7zz).
+
 ## Install
 
-`pip install git+https://github.com/datasnakes/htseq-analysis-scripts.git`
+`pip install HTSeqCountCluster`
 
 ## Features
 
@@ -55,10 +57,14 @@ optional arguments:
 
 ### Examples
 
-#### Run htseq_count_cluster.py
+#### Run htseq-count-cluster
+
+After generating bam output files from tophat, instead of using HTSeq's htseq count, you
+can use our `htseq-count-cluster` script. This script is intended for use with
+clusters that are using pbs (qsub) for job monitoring.
 
 ```bash
-python htseq_count_cluster.py -p path/to/samples/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
+htseq-count-cluster -p path/to/samples/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
 ```
 This script uses logzero so there will be color coded logging information to your shell.
 
@@ -69,10 +75,12 @@ shell without the program ending and utilize another shell.
 
 #### Merge output counts files
 
-In order to prep your data for `DESeq2` or `edgeR`, it's best to have 1 merged
-counts file.
+In order to prep your data for `DESeq2`, `limma` or `edgeR`, it's best to have 1 merged
+counts file instead of multiple files produced from the `htseq-count-cluster` script. We offer this
+as a standalone script as it may be useful to keep those files separate.
+
 ```bash
-python mergecounts.py -d path/to/cluster-output/
+merge-counts -d path/to/cluster-output/
 ```
 
 ##### Help message for mergecounts.py

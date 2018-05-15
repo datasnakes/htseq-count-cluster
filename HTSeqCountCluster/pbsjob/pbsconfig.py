@@ -4,7 +4,7 @@ from datetime import datetime as d
 import sys
 import os
 
-from HTSeqAnalysis.pbsjob.pbsutils import randomid
+from HTSeqCountCluster.pbsjob.pbsutils import randomid
 
 if sys.version_info.major < 3:
     raise NotImplementedError('This is not designed for the python version in your \
