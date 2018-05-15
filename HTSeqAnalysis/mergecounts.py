@@ -4,6 +4,7 @@ import os
 import argparse
 import textwrap
 
+
 def merge_counts_tables(filesdirectory):
     """Merge multiple counts tables into 1 counts table.
 
