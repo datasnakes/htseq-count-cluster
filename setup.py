@@ -23,7 +23,7 @@ setup(
     author='Shaurita Hutchins & Robert Gilmore',
     author_email='datasnakes@gmail.com',
     description="A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster.",
-    version='1.2',
+    version='1.3',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/datasnakes/htseq-count-cluster',
@@ -43,6 +43,11 @@ setup(
     # Packages will be automatically found if not in this list.
     packages=find_packages(),
     include_package_data=True,
+    install_requires=[
+          'HTSeq>=0.9.1',
+          'pandas>=0.20.3',
+          'logzero>=1.3.1'
+      ],
     package_data={
             'HTSeqCountCluster': ['pbsjob/*.pbs'],
             },
