@@ -1,5 +1,8 @@
 sudo: false
 language: python
+addons:
+  apt:
+    update: true
 cache: pip
 python:
   - "3.5"
