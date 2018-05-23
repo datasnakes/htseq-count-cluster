@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/datasnakes/htseq-count-cluster.svg?branch=master)](https://travis-ci.org/datasnakes/htseq-count-cluster)
+[![Build Status](https://travis-ci.org/datasnakes/htseq-count-cluster.svg?branch=master)](https://travis-ci.org/datasnakes/htseq-count-cluster) [![PyPI version](https://badge.fury.io/py/HTSeqCountCluster.svg)](https://badge.fury.io/py/HTSeqCountCluster)
 
 # htseq-count-cluster
 
