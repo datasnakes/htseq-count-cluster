@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/datasnakes/htseq-count-cluster.svg?branch=master)](https://travis-ci.org/datasnakes/htseq-count-cluster)
+[![Build Status](https://travis-ci.org/datasnakes/htseq-count-cluster.svg?branch=master)](https://travis-ci.org/datasnakes/htseq-count-cluster) [![PyPI version](https://badge.fury.io/py/HTSeqCountCluster.svg)](https://badge.fury.io/py/HTSeqCountCluster) 
+[![GitHub license](https://img.shields.io/github/license/datasnakes/htseq-count-cluster.svg)](https://github.com/datasnakes/htseq-count-cluster/blob/master/LICENSE)
+
 
 # htseq-count-cluster
 
@@ -19,13 +21,17 @@ View [documentation](https://tinyurl.com/yb7kz7zz).
 - Merges counts files into one counts table/csv file
 - Uses `accepted_hits.bam` file output of `tophat`
 
+
 ### Examples
 
 #### Run htseq-count-cluster
 
-After generating bam output files from tophat, instead of using HTSeq's htseq count, you
+After generating bam output files from tophat, instead of using HTSeq's `htseq-count`, you
 can use our `htseq-count-cluster` script. This script is intended for use with
 clusters that are using pbs (qsub) for job monitoring.
+
+Our default `htseq-count` command is `htseq-count -f bam -s no file.bam file.gtf -o htseq.out`.
+This command does not take into account any strandedness (`-s no`) for the input bamfiles (`-f bam`) and uses the default `union` mode. For the default mode `union`, only the aligned read determines how the read pair is counted.
 
 ```bash
 htseq-count-cluster -p path/to/bam-files/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
@@ -106,7 +112,7 @@ optional arguments:
 
 ## Maintainers
 
-Shaurita Hutchins | [@sdhutchins](https://github.com/sdhutchins) | [✉](mailto:sdhutchins@outlook.com)
+Shaurita Hutchins | [@sdhutchins](https://github.com/sdhutchins) | [✉](mailto:sdhutchins@outlook.com)  
 Rob Gilmore | [@grabear](https://github.com/grabear) | [✉](mailto:robgilmore127@gmail.com)
 
 
@@ -114,3 +120,7 @@ Rob Gilmore | [@grabear](https://github.com/grabear) | [✉](mailto:robgilmore12
 
 Please feel free to [open an issue](https://github.com/datasnakes/htseq-count-cluster/issues/new) if you have a question/feedback/problem
 or [submit a pull request](https://github.com/datasnakes/htseq-count-cluster/compare) to add a feature/refactor/etc. to this project.
+
+## Citation
+
+*Simon Anders, Paul Theodor Pyl, Wolfgang Huber; **HTSeq—a Python framework to work with high-throughput sequencing data**, Bioinformatics, Volume 31, Issue 2, 15 January 2015, Pages 166–169, https://doi.org/10.1093/bioinformatics/btu638*
