@@ -13,6 +13,9 @@ def merge_counts_tables(filesdirectory):
     the first column and then insert each subsequent sample name as column
     header with counts data as the column rows.
     """
+    if filesdirectory == ".":
+        filesdirectory = os.getcwd()
+
     files = os.listdir(filesdirectory)
 
     samplenames = []
@@ -29,9 +32,11 @@ def merge_counts_tables(filesdirectory):
         sample_dfs.append(sdf[samplename])
         genes = list(sdf['Genes'])
 
+    samplenames.sort()
     genes_df = pd.DataFrame(genes, columns=['Genes'])
     samples_df = pd.concat(sample_dfs, axis=1)
-    final_df = pd.concat([genes_df, samples_df], axis=1)
+    sorted_samples_df = samples_df[samplenames]
+    final_df = pd.concat([genes_df, sorted_samples_df], axis=1)
 
     final_df.to_csv('merged_counts_table.csv', index=False)
 
