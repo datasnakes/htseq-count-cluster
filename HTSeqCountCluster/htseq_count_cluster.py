@@ -9,7 +9,7 @@ from HTSeqCountCluster.pbsjob.qstat import Qstat
 from HTSeqCountCluster.logger import Logger
 
 
-htseq_log = Logger().default(logname="htseq count cluster", logfile=None)
+htseq_log = Logger().default(logname="htseq-count-cluster", logfile=None)
 
 
 def call_htseq(infile, gtf, outfile):

@@ -23,7 +23,7 @@ setup(
     author='Shaurita Hutchins & Robert Gilmore',
     author_email='datasnakes@gmail.com',
     description="A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster.",
-    version='1.3',
+    version='1.4',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/datasnakes/htseq-count-cluster',
