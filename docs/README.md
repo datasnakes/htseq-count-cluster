@@ -15,7 +15,7 @@ python setup.py build_sphinx
 Perform the below command in the root directory of this package. First, remove all of the existing files.
 
 ```bash
-rm -rf docs//modules/*.rst
+rm -rf docs/modules/*.rst
 
 sphinx-apidoc HTSeqCountCluster/ -o docs/modules
 ```
