@@ -4,6 +4,11 @@ This folder contains our docs and how to recreate them.
 
 ## Recreating docs with `setup.py`
 
+Run the below command:
+```python
+python setup.py build_sphinx
+```
+
 
 ### Creating the modules directory for apidocs
 
