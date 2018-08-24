@@ -6,6 +6,9 @@ necessary requirements.
 from setuptools import setup, find_packages
 from codecs import open  # To use a consistent encoding
 from os import path
+from sphinx.setup_command import BuildDoc
+
+cmdclass = {'build_sphinx': BuildDoc}
 
 # Set the home path of the setup script/package
 home = path.abspath(path.dirname(__file__))
@@ -24,7 +27,6 @@ setup(
     author_email='datasnakes@gmail.com',
     description="A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster.",
     version='1.4',
-    release=version,
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/datasnakes/htseq-count-cluster',
@@ -64,6 +66,6 @@ setup(
     'build_sphinx': {
         'project': ('setup.py', name),
         'version': ('setup.py', version),
-        'release': ('setup.py', release),
+        'release': ('setup.py', version),
         'source_dir': ('setup.py', 'docs')}},
 )
