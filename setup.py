@@ -14,7 +14,7 @@ name = 'HTSeqCountCluster'
 
 def readme():
     """Get the long description from the README file."""
-    with open(path.join(home, 'README.md'), encoding='utf-8') as f:
+    with open(path.join(home, 'README.rst'), encoding='utf-8') as f:
         return f.read()
 
 
@@ -24,6 +24,7 @@ setup(
     author_email='datasnakes@gmail.com',
     description="A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster.",
     version='1.4',
+    release=version,
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/datasnakes/htseq-count-cluster',
@@ -58,5 +59,11 @@ setup(
     },
     zip_safe=False,
     test_suite='nose.collector',
-    tests_require=['nose']
+    tests_require=['nose'],
+    command_options={
+    'build_sphinx': {
+        'project': ('setup.py', name),
+        'version': ('setup.py', version),
+        'release': ('setup.py', release),
+        'source_dir': ('setup.py', 'docs')}},
 )
