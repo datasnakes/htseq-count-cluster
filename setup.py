@@ -13,7 +13,7 @@ cmdclass = {'build_sphinx': BuildDoc}
 # Set the home path of the setup script/package
 home = path.abspath(path.dirname(__file__))
 name = 'HTSeqCountCluster'
-version='1.3'
+version = '1.3'
 
 
 def readme():
