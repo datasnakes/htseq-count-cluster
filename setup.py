@@ -13,6 +13,7 @@ cmdclass = {'build_sphinx': BuildDoc}
 # Set the home path of the setup script/package
 home = path.abspath(path.dirname(__file__))
 name = 'HTSeqCountCluster'
+version='1.3'
 
 
 def readme():
@@ -26,7 +27,7 @@ setup(
     author='Shaurita Hutchins & Robert Gilmore',
     author_email='datasnakes@gmail.com',
     description="A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster.",
-    version='1.3',
+    version=version',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/datasnakes/htseq-count-cluster',
