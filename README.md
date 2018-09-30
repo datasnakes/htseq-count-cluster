@@ -54,7 +54,9 @@ shell without the program ending and utilize another shell.
 
 ##### Help message output for `htseq-count-cluster`
 
-```
+```console
+$ htseq-count-cluster --help
+
 usage: htseq-count-cluster [-h] -p INPATH -f INFILE -g GTF -o OUTPATH
                               [-e EMAIL]
 
@@ -91,7 +93,9 @@ merge-counts -d path/to/cluster-output/
 
 ##### Help message for `merge-counts`
 
-```
+```console
+$ merge-counts --help
+
 usage: merge-counts [-h] -d DIRECTORY
 
 Merge multiple counts tables into 1 counts .csv file.
