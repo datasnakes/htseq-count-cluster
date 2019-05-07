@@ -13,7 +13,14 @@ htseq_log = Logger().default(logname="htseq-count-cluster", logfile=None)
 
 
 def call_htseq(infile, gtf, outfile):
-    """Call the htseq-count script."""
+    """Call the htseq-count script.
+
+    :param infile: The person sending the message
+    :param gtf: The person sending the message
+    :param outfile: The person sending the message
+
+    :return: The person sending the message
+    """
     cmd = 'htseq-count -f bam -s no {} {} -o {}_htseq.out'.format(infile, gtf, outfile)
     return cmd
 
