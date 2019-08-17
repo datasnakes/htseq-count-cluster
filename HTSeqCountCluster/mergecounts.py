@@ -1,28 +1,33 @@
 # -*- coding: utf-8 -*-
-import pandas as pd
 import os
 import argparse
 import textwrap
+
+import pandas as pd
+
 from HTSeqCountCluster.logger import Logger
 
 # Create a merge-counts logger
 mc_log = Logger().default(logname="merge-counts", logfile=None)
 
 
-def merge_counts_tables(filesdirectory):
+def merge_counts_tables(files_dir):
     """Merge multiple counts tables into 1 counts table.
 
     After running htseq-count-cluster, there will be a counts table for each
     sample in the output directory. This function will use the genes column as
     the first column and then insert each subsequent sample name as column
     header with counts data as the column rows.
+
+    :param files_dir: The directory of the individual counts files.
+    :type files_dir: str
     """
     mc_log.info("Running merge-counts script.")
-    if filesdirectory is ".":
-        filesdirectory = os.getcwd()
+    if files_dir is ".":
+        files_dir = os.getcwd()
 
-    mc_log.info("Your directory location is: %s" % filesdirectory)
-    files = os.listdir(filesdirectory)
+    mc_log.info("Your directory location is: %s" % files_dir)
+    files = os.listdir(files_dir)
 
     samplenames = []
     sample_dfs = []
@@ -32,7 +37,7 @@ def merge_counts_tables(filesdirectory):
         if ext == 'out':
             samplename, barcode = filename.split('-')
             samplenames.append(samplename)
-            filep = os.path.join(filesdirectory, file)
+            filep = os.path.join(files_dir, file)
             data = pd.read_table(filep, header=None,
                                  names=['Genes', samplename])
             mc_log.info("A dataframe has been created for %s." % samplename)
@@ -67,7 +72,7 @@ def main():
                         type=str)
     args = parser.parse_args()
 
-    merge_counts_tables(filesdirectory=args.directory)
+    merge_counts_tables(files_dir=args.directory)
 
 
 if __name__ == '__main__':
