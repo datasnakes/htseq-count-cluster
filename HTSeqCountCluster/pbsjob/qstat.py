@@ -3,6 +3,8 @@ from subprocess import check_output, CalledProcessError
 import getpass
 import re
 
+from HTSeqCountCluster.logger import Logger
+
 
 class Qstat(object):
     def __init__(self):
@@ -10,26 +12,34 @@ class Qstat(object):
         _username = getpass.getuser()
         self.username = _username
         self.split_regex = re.compile(r'\s+')
+        self.qstat_log = Logger().default(logname="qstat", logfile=None)
 
     def qstatinfo(self, qstat_path='qstat'):
-        """Retrieve qstat output."""
+        """Retrieve qstat output.
+
+        :param qstat_path: [description], defaults to 'qstat'
+        :type qstat_path: str, optional
+        """
         try:
             qstatinfo = check_output([qstat_path])
         except CalledProcessError as cpe:
             return_code = 'qstat returncode: %s' % cpe.returncode
             std_error = 'qstat standard output: %s' % cpe.stderr
-            print(return_code + '\n' + std_error)
+            self.qstat_log(return_code + '\n' + std_error)
         except FileNotFoundError:
             raise FileNotFoundError('qstat is not on your machine.')
+        else:
+            jobs = self._output_parser(qstatinfo)
 
-        jobs = self._output_parser(qstatinfo)
-
-        return jobs
+            return jobs
 
     def _output_parser(self, output):
         """Parse output from qstat pbs commandline program.
 
         Returns a list of dictionaries for each job.
+
+        :param output: The qstat output.
+        :type output: [type]
         """
         lines = output.decode('utf-8').split('\n')
         del lines[:5]
@@ -37,9 +47,10 @@ class Qstat(object):
         for line in lines:
             els = self.split_regex.split(line)
             try:
-            	j = {"job_id": els[0], "name": els[1], "user": els[2], "elapsed_time": els[3],
-                 	"status": els[4], "queue": els[5]}
-            	jobs.append(j)
+                j = {"job_id": els[0], "name": els[1], "user": els[2],
+                     "elapsed_time": els[3], "status": els[4],
+                     "queue": els[5]}
+                jobs.append(j)
 
             except IndexError:
                 pass

@@ -3,8 +3,8 @@ import os
 from pkg_resources import resource_filename
 
 from HTSeqCountCluster.logger import Logger
-from HTSeqCountCluster.pbsjob.pbsutils import (basejobids, writecodefile,
-                                               import_temp, file2str)
+from HTSeqCountCluster.pbsjob.pbsutils import (basejobids, write_code_file,
+                                               import_temp, file_to_str)
 from HTSeqCountCluster.pbsjob.pbsconfig import __DEFAULT__
 from HTSeqCountCluster import pbsjob
 from HTSeqCountCluster.pbsjob.qstat import Qstat
@@ -12,6 +12,7 @@ from HTSeqCountCluster.pbsjob.qstat import Qstat
 
 class BasePBSJob(object):
     """Base class for simple jobs."""
+
     def __init__(self, base_jobname):
         """Initialize job attributes."""
         self.default_job_attributes = __DEFAULT__
@@ -43,6 +44,7 @@ class BasePBSJob(object):
 
 class PBSJob(BasePBSJob):
     """Create a qsub/pbs job & script for the job to execute."""
+
     def __init__(self, email_address, base_jobname=None):
         super().__init__(base_jobname=base_jobname)
         self.email = email_address
@@ -82,10 +84,13 @@ class PBSJob(BasePBSJob):
             code_str = code
 
         if default:
-            self.sgejob_log.info('You are running a job with default attributes.')
-            writecodefile(filename=self.jobname, code=code_str, language='python')
+            self.sgejob_log.info(
+                'You are running a job with default attributes.')
+            writecodefile(filename=self.jobname,
+                          code=code_str, language='python')
             pyfilename = self.jobname + '.py'
-            self.sgejob_log.info('%s python file has been created.' % pyfilename)
+            self.sgejob_log.info(
+                '%s python file has been created.' % pyfilename)
 
             # Create the pbs script from the template or dict
             pbstemp = import_temp(self.temp_pbs)
@@ -104,7 +109,8 @@ class PBSJob(BasePBSJob):
         try:
             cmd = ['qsub ' + self.jobname + '.pbs']  # this is the command
             # Shell MUST be True
-            cmd_status = run(cmd, stdout=PIPE, stderr=PIPE, shell=True, check=True)
+            cmd_status = run(cmd, stdout=PIPE, stderr=PIPE,
+                             shell=True, check=True)
         except CalledProcessError as err:
             self.sgejob_log.error(err.stderr.decode('utf-8'))
             if cleanup:
@@ -144,7 +150,8 @@ class PBSJob(BasePBSJob):
         try:
             cmd = ['qsub ' + self.jobname + '.pbs']  # this is the command
             # Shell MUST be True
-            cmd_status = run(cmd, stdout=PIPE, stderr=PIPE, shell=True, check=True)
+            cmd_status = run(cmd, stdout=PIPE, stderr=PIPE,
+                             shell=True, check=True)
         except CalledProcessError as err:
             self.sgejob_log.error(err.stderr.decode('utf-8'))
             if cleanup:
@@ -162,4 +169,3 @@ class PBSJob(BasePBSJob):
 
             else:  # Unsuccessful. Stdout will be '1'
                 self.sgejob_log.error('PBS job not submitted.')
-
