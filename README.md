@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/datasnakes/htseq-count-cluster.svg?branch=master)](https://travis-ci.org/datasnakes/htseq-count-cluster) [![PyPI version](https://badge.fury.io/py/HTSeqCountCluster.svg)](https://badge.fury.io/py/HTSeqCountCluster) 
 [![GitHub license](https://img.shields.io/github/license/datasnakes/htseq-count-cluster.svg)](https://github.com/datasnakes/htseq-count-cluster/blob/master/LICENSE)
+[![Documentation Status](https://readthedocs.org/projects/htseq-count-cluster/badge/?version=latest)](https://htseq-count-cluster.readthedocs.io/en/latest/?badge=latest)
 
 
 # htseq-count-cluster
