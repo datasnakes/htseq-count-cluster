@@ -13,13 +13,34 @@ htseq_log = Logger().default(logname="htseq-count-cluster", logfile=None)
 
 
 def call_htseq(infile, gtf, outfile):
-    """Call the htseq-count script."""
-    cmd = 'htseq-count -f bam -s no {} {} -o {}_htseq.out'.format(infile, gtf, outfile)
+    """Call the htseq-count script.
+
+    :param infile: An alignment file of aligned reads in SAM format.
+    :type infile: str
+    :param gtf: The gtf (Gene transfer format) file.
+    :type gtf: str
+    :param outfile: The name of the output SAM alignment file.
+    :type outfile: str
+    """
+    cmd = 'htseq-count -f bam -s no {} {} -o {}_htseq.out'.format(
+        infile, gtf, outfile)
     return cmd
 
 
 def htseq_jobber(input_path, inputlist, gtf, outpath, email):
-    """Create multiple pbs jobs based on input list of files."""
+    """Create multiple pbs jobs based on input list of files.
+
+    :param input_path: [description]
+    :type input_path: [type]
+    :param inputlist: [description]
+    :type inputlist: [type]
+    :param gtf: The gtf (Gene transfer format) file.
+    :type gtf: str
+    :param outpath: [description]
+    :type outpath: [type]
+    :param email: An email address to send notifications.
+    :type email: str
+    """
     jobids = []
     for item in inputlist:
         htseqjob = PBSJob(email_address=email, base_jobname=item)
@@ -33,7 +54,13 @@ def htseq_jobber(input_path, inputlist, gtf, outpath, email):
 
 
 def check_job_status(job_id, email=True):
-    """Use Qstat to monitor your job status."""
+    """Use Qstat to monitor your job status.
+
+    :param job_id: The job's id.
+    :type job_id: str
+    :param email: A flag to decide whether to send email, defaults to True
+    :type email: bool, optional
+    """
     # TODO Allow either slack notifications or email or text.
     qwatch = Qstat().watch(job_id)
     if qwatch == 'Job id not found.':
@@ -51,13 +78,17 @@ def main():
                                      description=textwrap.dedent('''\
                                     This is a command line wrapper around htseq-count.
                                     '''))
-    parser.add_argument('-p', '--inpath', help='Path of your samples/sample folders.', required=True)
-    parser.add_argument('-f', '--infile', help='Name or path to your input csv file.', required=True)
-    parser.add_argument('-g', '--gtf', help='Name or path to your gtf/gff file.', required=True)
+    parser.add_argument('-p', '--inpath', help='Path of your samples/sample folders.',
+                        required=True)
+    parser.add_argument('-f', '--infile', help='Name or path to your input csv file.',
+                        required=True)
+    parser.add_argument('-g', '--gtf', help='Name or path to your gtf/gff file.',
+                        required=True)
     parser.add_argument('-o', '--outpath',
                         help='Directory of your output counts file. The counts file will be named.',
                         required=True)
-    parser.add_argument('-e', '--email', help='Email address to send script completion to.')
+    parser.add_argument('-e', '--email',
+                        help='Email address to send script completion to.')
 
     args = parser.parse_args()
 
