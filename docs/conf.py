@@ -21,7 +21,7 @@ sys.setrecursionlimit(1500)
 
 project = 'htseq-count-cluster'
 copyright = '2018, Shaurita Hutchins, Robert Gilmore'
-author = 'Shaurita Hutchins, Robert Gilmore'
+author = 'Shaurita D.Hutchins, Robert Gilmore'
 
 # The short X.Y version
 version = '1.5'
@@ -65,8 +65,11 @@ intersphinx_mapping = {
 templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
-# You can specify multiple suffix as a list of string:
-source_suffix = ['.rst', '.md']
+# Configure Sphinx to parse both RST and Markdown files
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
 # The master toctree document.
 master_doc = 'index'
