@@ -4,8 +4,7 @@
    contain the root `toctree` directive.
 
 
-.. include:: ../README.rst
-   :start-after: inclusion-marker-do-not-remove
+.. include:: ../README.md
 
 .. toctree::
    :maxdepth: 1

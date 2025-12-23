@@ -16,7 +16,7 @@ class BasePBSJob(object):
     def __init__(self, base_jobname):
         """Initialize job attributes."""
         self.default_job_attributes = __DEFAULT__
-        self.file2str = file2str
+        self.file2str = file_to_str
         self.sgejob_log = Logger().default(logname="SGE JOB", logfile=None)
         self.pbsworkdir = os.getcwd()
 
@@ -86,7 +86,7 @@ class PBSJob(BasePBSJob):
         if default:
             self.sgejob_log.info(
                 'You are running a job with default attributes.')
-            writecodefile(filename=self.jobname,
+            write_code_file(filename=self.jobname,
                           code=code_str, language='python')
             pyfilename = self.jobname + '.py'
             self.sgejob_log.info(
