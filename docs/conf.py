@@ -28,6 +28,9 @@ version = '1.5'
 # The full version, including alpha/beta/rc tags
 release = '1.5'
 
+# Set canonical URL for Read the Docs
+html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "/")
+
 
 # -- General configuration ---------------------------------------------------
 
