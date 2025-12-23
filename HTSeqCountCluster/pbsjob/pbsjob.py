@@ -1,6 +1,6 @@
 from subprocess import run, CalledProcessError, PIPE
 import os
-from pkg_resources import resource_filename
+from pathlib import Path
 
 from HTSeqCountCluster.logger import Logger
 from HTSeqCountCluster.pbsjob.pbsutils import (basejobids, write_code_file,
@@ -20,8 +20,17 @@ class BasePBSJob(object):
         self.sgejob_log = Logger().default(logname="SGE JOB", logfile=None)
         self.pbsworkdir = os.getcwd()
 
-        # Import the temp.pbs file using pkg_resources
-        self.temp_pbs = resource_filename(pbsjob.__name__, "temp.pbs")
+        # Get the temp.pbs file path using importlib.resources (Python 3.9+)
+        try:
+            from importlib.resources import files
+            temp_pbs_resource = files(pbsjob).joinpath("temp.pbs")
+            # Convert Traversable to string path
+            # For file system resources, this should work
+            self.temp_pbs = str(temp_pbs_resource)
+        except (ImportError, AttributeError, TypeError):
+            # Fallback: use __file__ to find the package directory
+            pbsjob_dir = Path(pbsjob.__file__).parent if hasattr(pbsjob, '__file__') else Path(__file__).parent.parent / 'pbsjob'
+            self.temp_pbs = str(pbsjob_dir / "temp.pbs")
 
     @classmethod
     def _configure(cls, length, base_jobname):
