@@ -1,2 +1,2 @@
-sphinx
-myst-parser
+sphinx>=5.0.0
+myst-parser>=0.18.0

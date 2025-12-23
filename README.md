@@ -7,7 +7,7 @@
 
 A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htseq-count` on a cluster.
 
-View [documentation](https://tinyurl.com/yb7kz7zz).
+View [documentation](http://htseq-count-cluster.rtfd.io/).
 
 ## Install
 
