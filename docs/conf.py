@@ -53,6 +53,7 @@ myst_enable_extensions = [
     "colon_fence",
     "deflist",
     "html_image",
+    "tasklist",
 ]
 
 intersphinx_mapping = {
