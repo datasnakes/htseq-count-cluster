@@ -45,6 +45,13 @@ extensions = [
     'myst_parser',
 ]
 
+# Myst parser configuration
+myst_enable_extensions = [
+    "colon_fence",
+    "deflist",
+    "html_image",
+]
+
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'requests': ('http://docs.python-requests.org/en/latest/', None),
