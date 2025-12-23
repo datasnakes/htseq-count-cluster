@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "HTSeqCountCluster"
-version = "1.4"
+version = "1.5"
 description = "A cli for running multiple pbs/qsub jobs with HTSeq's htseq-count script on a cluster."
 readme = "README.md"
 requires-python = ">=3.9"

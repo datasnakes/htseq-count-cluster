@@ -17,7 +17,7 @@ except ImportError:
 # Set the home path of the setup script/package
 home = Path(__file__).parent.absolute()
 name = 'HTSeqCountCluster'
-version = '1.4'
+version = '1.5'
 
 def readme():
     """Get the long description from the README file."""
