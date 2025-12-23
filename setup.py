@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
-""" This is the setup.py script for setting up the package and fulfilling any
-necessary requirements.
+"""Setup script for HTSeqCountCluster package.
+
+This setup.py is maintained for backward compatibility.
+Modern build configuration is in pyproject.toml (PEP 517/518).
 """
 
+from pathlib import Path
 from setuptools import setup, find_packages
-from codecs import open  # To use a consistent encoding
-from os import path
-from sphinx.setup_command import BuildDoc
 
-cmdclass = {'build_sphinx': BuildDoc}
+try:
+    from sphinx.setup_command import BuildDoc
+    cmdclass = {'build_sphinx': BuildDoc}
+except ImportError:
+    cmdclass = {}
 
 # Set the home path of the setup script/package
-home = path.abspath(path.dirname(__file__))
+home = Path(__file__).parent.absolute()
 name = 'HTSeqCountCluster'
 version = '1.4'
 
 def readme():
     """Get the long description from the README file."""
-    with open(path.join(home, 'README.md'), encoding='utf-8') as f:
-        return f.read()
+    readme_file = home / 'README.md'
+    return readme_file.read_text(encoding='utf-8')
 
 
 setup(
@@ -32,12 +36,16 @@ setup(
     url='https://github.com/datasnakes/htseq-count-cluster',
     license='MIT',
     keywords='science lab pyschiatry rnaseq htseq',
+    python_requires='>=3.9',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'License :: OSI Approved :: MIT License',
         ],
     project_urls={
             'Website': 'https://tinyurl.com/yb7kz7zz',
@@ -61,8 +69,10 @@ setup(
                 ]
     },
     zip_safe=False,
-    test_suite='nose.collector',
-    tests_require=['nose'],
+    extras_require={
+        'test': ['pytest>=6.0', 'pytest-cov'],
+        'dev': ['pytest>=6.0', 'pytest-cov', 'sphinx'],
+    },
     command_options={
     'build_sphinx': {
         'project': ('setup.py', name),
