@@ -24,9 +24,9 @@ copyright = '2018, Shaurita Hutchins, Robert Gilmore'
 author = 'Shaurita Hutchins, Robert Gilmore'
 
 # The short X.Y version
-version = ''
+version = '1.5'
 # The full version, including alpha/beta/rc tags
-release = '1.3'
+release = '1.5'
 
 
 # -- General configuration ---------------------------------------------------

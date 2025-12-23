@@ -11,7 +11,11 @@ View [documentation](https://tinyurl.com/yb7kz7zz).
 
 ## Install
 
-`pip install HTSeqCountCluster`
+Requires Python 3.9 or higher.
+
+```bash
+pip install HTSeqCountCluster
+```
 
 ## Features
 
@@ -34,17 +38,23 @@ clusters that are using pbs (qsub) for job monitoring.
 Our default `htseq-count` command is `htseq-count -f bam -s no file.bam file.gtf -o htseq.out`.
 This command does not take into account any strandedness (`-s no`) for the input bamfiles (`-f bam`) and uses the default `union` mode. For the default mode `union`, only the aligned read determines how the read pair is counted.
 
+**Legacy mode (still supported):**
 ```bash
 htseq-count-cluster -p path/to/bam-files/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
+```
+
+**New subcommand mode:**
+```bash
+htseq-count-cluster run -p path/to/bam-files/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
 ```
 
 | Argument |                                                                             Description                                                                             | Required |
 |:--------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------:|
 |   `-p`   | This is the path of your .bam files.  Presently, this script looks for a folder that is the sample name and searches for an accepted_hits.bam file (tophat output). |    Yes   |
-|   `-i`   |                                                     You should have a csv file list of your samples or folder names (no header).                                                    |    Yes   |
+|   `-f`   |                                                     You should have a csv file list of your samples or folder names (no header).                                                    |    Yes   |
 |   `-g`   |                                                           This should be the path to your genes.gtf file.                                                           |    Yes   |
 |   `-o`   |                                                  This should be an existing directory for your output counts files.                                                 |    Yes   |
-|   `-e`   |
+|   `-e`   |                                                           Email address to send script completion notifications to.                                                           |    No   |
 
 This script uses logzero so there will be color coded logging information to your shell.
 
@@ -55,10 +65,26 @@ shell without the program ending and utilize another shell.
 ##### Help message output for `htseq-count-cluster`
 
 ```
-usage: htseq-count-cluster [-h] -p INPATH -f INFILE -g GTF -o OUTPATH
-                              [-e EMAIL]
+usage: htseq-count-cluster [-h] COMMAND ...
 
 This is a command line wrapper around htseq-count.
+
+positional arguments:
+  COMMAND
+    run                 Run htseq-count jobs on a cluster
+    merge               Merge multiple counts tables into one CSV file
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+*Ensure that htseq-count is in your path.
+```
+
+For the `run` subcommand:
+```
+usage: htseq-count-cluster run [-h] -p INPATH -f INFILE -g GTF -o OUTPATH [-e EMAIL]
+
+Submit multiple htseq-count jobs to a cluster.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -72,27 +98,28 @@ optional arguments:
                         will be named.
   -e EMAIL, --email EMAIL
                         Email address to send script completion to.
-
-*Ensure that htseq-count is in your path.
-
-
 ```
 
 
 #### Merge output counts files
 
 In order to prep your data for `DESeq2`, `limma` or `edgeR`, it's best to have 1 merged
-counts file instead of multiple files produced from the `htseq-count-cluster` script. We offer this
-as a standalone script as it may be useful to keep those files separate.
+counts file instead of multiple files produced from the `htseq-count-cluster` script. 
 
+**Using the merge subcommand:**
+```bash
+htseq-count-cluster merge -d path/to/cluster-output/
+```
+
+**Or using the standalone command (still available):**
 ```bash
 merge-counts -d path/to/cluster-output/
 ```
 
-##### Help message for `merge-counts`
+##### Help message for `merge` subcommand
 
 ```
-usage: merge-counts [-h] -d DIRECTORY
+usage: htseq-count-cluster merge [-h] -d DIRECTORY
 
 Merge multiple counts tables into 1 counts .csv file.
 
