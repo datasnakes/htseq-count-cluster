@@ -1,6 +1,6 @@
 from subprocess import run, CalledProcessError, PIPE
 import os
-from pkg_resources import resource_filename
+from pathlib import Path
 
 from HTSeqCountCluster.logger import Logger
 from HTSeqCountCluster.pbsjob.pbsutils import (basejobids, write_code_file,
@@ -16,12 +16,21 @@ class BasePBSJob(object):
     def __init__(self, base_jobname):
         """Initialize job attributes."""
         self.default_job_attributes = __DEFAULT__
-        self.file2str = file2str
+        self.file2str = file_to_str
         self.sgejob_log = Logger().default(logname="SGE JOB", logfile=None)
         self.pbsworkdir = os.getcwd()
 
-        # Import the temp.pbs file using pkg_resources
-        self.temp_pbs = resource_filename(pbsjob.__name__, "temp.pbs")
+        # Get the temp.pbs file path using importlib.resources (Python 3.9+)
+        try:
+            from importlib.resources import files
+            temp_pbs_resource = files(pbsjob).joinpath("temp.pbs")
+            # Convert Traversable to string path
+            # For file system resources, this should work
+            self.temp_pbs = str(temp_pbs_resource)
+        except (ImportError, AttributeError, TypeError):
+            # Fallback: use __file__ to find the package directory
+            pbsjob_dir = Path(pbsjob.__file__).parent if hasattr(pbsjob, '__file__') else Path(__file__).parent.parent / 'pbsjob'
+            self.temp_pbs = str(pbsjob_dir / "temp.pbs")
 
     @classmethod
     def _configure(cls, length, base_jobname):
@@ -86,7 +95,7 @@ class PBSJob(BasePBSJob):
         if default:
             self.sgejob_log.info(
                 'You are running a job with default attributes.')
-            writecodefile(filename=self.jobname,
+            write_code_file(filename=self.jobname,
                           code=code_str, language='python')
             pyfilename = self.jobname + '.py'
             self.sgejob_log.info(

@@ -4,14 +4,13 @@
    contain the root `toctree` directive.
 
 
-.. include:: ../README.rst
-   :start-after: inclusion-marker-do-not-remove
+.. include:: ../README.md
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 
-
+   modules/modules
 
 Indices and tables
 ==================

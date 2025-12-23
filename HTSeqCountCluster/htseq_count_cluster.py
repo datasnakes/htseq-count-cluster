@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 import argparse
 import textwrap
 
@@ -7,6 +8,7 @@ from HTSeqCountCluster.utils import csvtolist
 from HTSeqCountCluster.pbsjob import PBSJob
 from HTSeqCountCluster.pbsjob.qstat import Qstat
 from HTSeqCountCluster.logger import Logger
+from HTSeqCountCluster.mergecounts import merge_counts_tables
 
 
 htseq_log = Logger().default(logname="htseq-count-cluster", logfile=None)
@@ -72,30 +74,133 @@ def check_job_status(job_id, email=True):
 
 
 def main():
-    """Run the htseq_jobber function."""
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
-                                     epilog="*Ensure that htseq-count is in your path.",
-                                     description=textwrap.dedent('''\
-                                    This is a command line wrapper around htseq-count.
-                                    '''))
-    parser.add_argument('-p', '--inpath', help='Path of your samples/sample folders.',
-                        required=True)
-    parser.add_argument('-f', '--infile', help='Name or path to your input csv file.',
-                        required=True)
-    parser.add_argument('-g', '--gtf', help='Name or path to your gtf/gff file.',
-                        required=True)
-    parser.add_argument('-o', '--outpath',
-                        help='Directory of your output counts file. The counts file will be named.',
-                        required=True)
-    parser.add_argument('-e', '--email',
-                        help='Email address to send script completion to.')
-
+    """Main CLI entry point with subcommands for run and merge."""
+    # Check for backward compatibility: if first arg is not a known subcommand,
+    # use legacy parser
+    known_commands = {'run', 'merge'}
+    use_legacy = len(sys.argv) > 1 and sys.argv[1] not in known_commands
+    
+    if use_legacy:
+        # Legacy mode: parse old-style arguments
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            epilog="*Ensure that htseq-count is in your path.",
+            description=textwrap.dedent('''\
+                This is a command line wrapper around htseq-count.
+                '''))
+        parser.add_argument(
+            '-p', '--inpath',
+            help='Path of your samples/sample folders.',
+            required=True
+        )
+        parser.add_argument(
+            '-f', '--infile',
+            help='Name or path to your input csv file.',
+            required=True
+        )
+        parser.add_argument(
+            '-g', '--gtf',
+            help='Name or path to your gtf/gff file.',
+            required=True
+        )
+        parser.add_argument(
+            '-o', '--outpath',
+            help='Directory of your output counts file. The counts file will be named.',
+            required=True
+        )
+        parser.add_argument(
+            '-e', '--email',
+            help='Email address to send script completion to.'
+        )
+        args = parser.parse_args()
+        samplenames = csvtolist(args.infile)
+        htseq_jobber(
+            input_path=args.inpath,
+            inputlist=samplenames,
+            gtf=args.gtf,
+            outpath=args.outpath,
+            email=args.email
+        )
+        return
+    
+    # New mode: use subcommands
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="*Ensure that htseq-count is in your path.",
+        description=textwrap.dedent('''\
+            This is a command line wrapper around htseq-count.
+            '''))
+    
+    subparsers = parser.add_subparsers(
+        dest='command',
+        help='Available commands',
+        metavar='COMMAND',
+        required=True
+    )
+    
+    # Run subcommand (original functionality)
+    run_parser = subparsers.add_parser(
+        'run',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        help='Run htseq-count jobs on a cluster',
+        description=textwrap.dedent('''\
+            Submit multiple htseq-count jobs to a cluster.
+            '''))
+    run_parser.add_argument(
+        '-p', '--inpath',
+        help='Path of your samples/sample folders.',
+        required=True
+    )
+    run_parser.add_argument(
+        '-f', '--infile',
+        help='Name or path to your input csv file.',
+        required=True
+    )
+    run_parser.add_argument(
+        '-g', '--gtf',
+        help='Name or path to your gtf/gff file.',
+        required=True
+    )
+    run_parser.add_argument(
+        '-o', '--outpath',
+        help='Directory of your output counts file. The counts file will be named.',
+        required=True
+    )
+    run_parser.add_argument(
+        '-e', '--email',
+        help='Email address to send script completion to.'
+    )
+    
+    # Merge subcommand
+    merge_parser = subparsers.add_parser(
+        'merge',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        help='Merge multiple counts tables into one CSV file',
+        description=textwrap.dedent('''\
+            Merge multiple counts tables into 1 counts .csv file.
+            
+            Your output file will be named: merged_counts_table.csv
+            '''))
+    merge_parser.add_argument(
+        '-d', '--directory',
+        help='Path to folder of counts files.',
+        required=True,
+        type=str
+    )
+    
     args = parser.parse_args()
-
-    samplenames = csvtolist(args.infile)
-
-    htseq_jobber(input_path=args.inpath, inputlist=samplenames, gtf=args.gtf,
-                 outpath=args.outpath, email=args.email)
+    
+    if args.command == 'run':
+        samplenames = csvtolist(args.infile)
+        htseq_jobber(
+            input_path=args.inpath,
+            inputlist=samplenames,
+            gtf=args.gtf,
+            outpath=args.outpath,
+            email=args.email
+        )
+    elif args.command == 'merge':
+        merge_counts_tables(files_dir=args.directory)
 
 
 if __name__ == '__main__':
