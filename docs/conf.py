@@ -54,6 +54,7 @@ myst_enable_extensions = [
     "deflist",
     "html_image",
     "tasklist",
+    "substitution",
 ]
 
 intersphinx_mapping = {

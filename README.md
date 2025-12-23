@@ -48,13 +48,13 @@ htseq-count-cluster -p path/to/bam-files/ -f samples.csv -g genes.gtf -o path/to
 htseq-count-cluster run -p path/to/bam-files/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
 ```
 
-| Argument |                                                                             Description                                                                             | Required |
-|:--------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------:|
-|   `-p`   | This is the path of your .bam files.  Presently, this script looks for a folder that is the sample name and searches for an accepted_hits.bam file (tophat output). |    Yes   |
-|   `-f`   |                                                     You should have a csv file list of your samples or folder names (no header).                                                    |    Yes   |
-|   `-g`   |                                                           This should be the path to your genes.gtf file.                                                           |    Yes   |
-|   `-o`   |                                                  This should be an existing directory for your output counts files.                                                 |    Yes   |
-|   `-e`   |                                                           Email address to send script completion notifications to.                                                           |    No   |
+| Argument | Description | Required |
+|:--------:|:------------|:--------:|
+| `-p` | This is the path of your .bam files. Presently, this script looks for a folder that is the sample name and searches for an accepted_hits.bam file (tophat output). | Yes |
+| `-f` | You should have a csv file list of your samples or folder names (no header). | Yes |
+| `-g` | This should be the path to your genes.gtf file. | Yes |
+| `-o` | This should be an existing directory for your output counts files. | Yes |
+| `-e` | Email address to send script completion notifications to. | No |
 
 This script uses logzero so there will be color coded logging information to your shell.
 
@@ -64,7 +64,7 @@ shell without the program ending and utilize another shell.
 
 ##### Help message output for `htseq-count-cluster`
 
-```
+```text
 usage: htseq-count-cluster [-h] COMMAND ...
 
 This is a command line wrapper around htseq-count.
@@ -81,7 +81,8 @@ optional arguments:
 ```
 
 For the `run` subcommand:
-```
+
+```text
 usage: htseq-count-cluster run [-h] -p INPATH -f INFILE -g GTF -o OUTPATH [-e EMAIL]
 
 Submit multiple htseq-count jobs to a cluster.
@@ -118,7 +119,7 @@ merge-counts -d path/to/cluster-output/
 
 ##### Help message for `merge` subcommand
 
-```
+```text
 usage: htseq-count-cluster merge [-h] -d DIRECTORY
 
 Merge multiple counts tables into 1 counts .csv file.
