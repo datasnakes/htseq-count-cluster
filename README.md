@@ -1,5 +1,8 @@
-[![Build Status](https://travis-ci.org/datasnakes/htseq-count-cluster.svg?branch=master)](https://travis-ci.org/datasnakes/htseq-count-cluster) [![PyPI version](https://badge.fury.io/py/HTSeqCountCluster.svg)](https://badge.fury.io/py/HTSeqCountCluster) 
-[![GitHub license](https://img.shields.io/github/license/datasnakes/htseq-count-cluster.svg)](https://github.com/datasnakes/htseq-count-cluster/blob/master/LICENSE)
+[![Build Status](https://github.com/datasnakes/htseq-count-cluster/actions/workflows/package-build.yml/badge.svg?branch=main)](https://github.com/datasnakes/htseq-count-cluster/actions/workflows/package-build.yml)
+[![PyPI version](https://img.shields.io/pypi/v/HTSeqCountCluster.svg)](https://pypi.org/project/HTSeqCountCluster/)
+[![Python versions](https://img.shields.io/pypi/pyversions/HTSeqCountCluster.svg)](https://pypi.org/project/HTSeqCountCluster/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18028847.svg)](https://doi.org/10.5281/zenodo.18028847)
+[![License](https://img.shields.io/github/license/datasnakes/htseq-count-cluster.svg)](https://github.com/datasnakes/htseq-count-cluster/blob/master/LICENSE)
 [![Documentation Status](https://readthedocs.org/projects/htseq-count-cluster/badge/?version=latest)](https://htseq-count-cluster.readthedocs.io/en/latest/?badge=latest)
 
 
