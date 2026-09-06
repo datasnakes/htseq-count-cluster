@@ -14,7 +14,8 @@ identifiers and row order match.
 
 The [documentation](https://datasnakes.github.io/htseq-count-cluster/), built
 with [Great Docs](https://posit-dev.github.io/great-docs/), covers scheduler
-behavior and 2.0 migration.
+behavior and 2.0 migration. The [changelog](CHANGELOG.md) summarizes each
+release.
 
 ## Background
 
