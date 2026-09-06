@@ -1,0 +1,41 @@
+---
+title: PBS and Torque
+description: Submit one HTSeq job per sample with qsub.
+---
+
+On PBS/Torque, each sample becomes its own `qsub` job. The jobs retain
+independent identifiers and logs.
+
+They share the scheduler-neutral manifest format used by the Slurm backend.
+
+```bash
+htseq-count-cluster run \
+  --scheduler pbs \
+  --infile samples.csv \
+  --gtf genes.gtf \
+  --outpath counts \
+  --partition batch \
+  --memory 4gb \
+  --time 02:00:00
+```
+
+HTSeqCountCluster maps its options to PBS arguments:
+
+- `--partition` becomes the `qsub -q` queue name.
+- `--account` becomes the `qsub -A` account.
+- CPU and memory use `select=1:ncpus=<N>:mem=<MEMORY>`.
+- Time uses a separate `walltime=<TIME>` value.
+
+Resource syntax varies among PBS-family installations. Use `--dry-run` and
+compare the generated command with the cluster documentation.
+
+## Check status once
+
+```bash
+htseq-count-cluster status --scheduler pbs 12345.server
+```
+
+The command runs `qstat -f` once and normalizes the PBS state.
+
+If the job is absent from the site's `qstat` history, the result is `Unknown`.
+Absence alone does not establish success.

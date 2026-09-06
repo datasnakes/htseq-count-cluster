@@ -1,0 +1,51 @@
+---
+title: Slurm arrays
+description: Submit, throttle, and inspect HTSeq jobs on a Slurm cluster.
+---
+
+When the same counting command must run across many BAM files, a Slurm array
+keeps the submission together without combining the samples into one task.
+
+Each array task reads one generated TSV row. This avoids shell parsing of paths
+and sample identifiers.
+
+```bash
+htseq-count-cluster run \
+  --scheduler slurm \
+  --infile samples.csv \
+  --gtf genes.gtf \
+  --outpath counts \
+  --partition short \
+  --account my-allocation \
+  --memory 4G \
+  --time 02:00:00 \
+  --max-concurrent 8
+```
+
+Here, `--max-concurrent 8` allows at most eight tasks to run at once. Adjust that
+limit to match the cluster policy and your allocation.
+
+The CPU count is a scheduler request. `htseq-count` remains a single-process
+command.
+
+## Check status once
+
+```bash
+htseq-count-cluster status --scheduler slurm 12345678
+```
+
+This checks the job once rather than polling. The command queries:
+
+1. `squeue` for a current job;
+2. `sacct` after the job leaves the queue.
+
+The reported state is `Queued`, `Running`, `Finished`, `Failed`, or `Unknown`.
+
+## Inspect failures
+
+Start with the failed array task's log. The retained submission files serve
+different purposes:
+
+- `logs/` contains files named with the job and task identifiers.
+- The manifest records the input assigned to each task.
+- `run-array.sh` records the task command.

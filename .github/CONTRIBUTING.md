@@ -19,7 +19,7 @@ Before submitting a bug report, please do the following:
 Make sure your report includes:
 
 - **Operating system:** Windows? macOS? Linux? Include version details (e.g., Windows 11 64-bit, macOS Ventura 13.6, Ubuntu 22.04).
-- **Programming language version:** Include the interpreter/compiler version (e.g., Python 3.11.4). This project requires Python 3.9 or higher.
+- **Programming language version:** Include the interpreter/compiler version (e.g., Python 3.11.4). This project requires Python 3.10 or higher.
 - **Software version:** Which version(s) of the software are you using?
 - **Installation method:** How did you install the runtime and software? (OS packages, pyenv, from source, Conda, virtualenv, etc.)
 - **Steps to reproduce:** Include a copy of your code, the command you used, and the full output. Try to pare down your code to a simple "base case" that still reproduces the bug.
@@ -74,7 +74,7 @@ Here's an example workflow for contributing:
 1. Fork the repository on GitHub.
 2. Clone your fork: `git clone git@github.com:yourname/htseq-count-cluster.git`
 3. `cd htseq-count-cluster`
-4. Create and activate a virtual environment: `python -m venv venv` (Python 3.9+ required).
+4. Create and activate a virtual environment: `python -m venv venv` (Python 3.10+ required).
 5. Install the package in editable mode with development dependencies: `pip install -e ".[dev]"`
 6. Create a branch: `git checkout -b fix-description main` (or appropriate base branch).
 

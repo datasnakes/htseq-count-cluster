@@ -1,158 +1,129 @@
 [![Build Status](https://github.com/datasnakes/htseq-count-cluster/actions/workflows/package-build.yml/badge.svg?branch=main)](https://github.com/datasnakes/htseq-count-cluster/actions/workflows/package-build.yml)
+[![Documentation](https://img.shields.io/website?url=https%3A%2F%2Fdatasnakes.github.io%2Fhtseq-count-cluster%2F&label=docs)](https://datasnakes.github.io/htseq-count-cluster/)
 [![PyPI version](https://img.shields.io/pypi/v/HTSeqCountCluster.svg)](https://pypi.org/project/HTSeqCountCluster/)
 [![Python versions](https://img.shields.io/pypi/pyversions/HTSeqCountCluster.svg)](https://pypi.org/project/HTSeqCountCluster/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18028847.svg)](https://doi.org/10.5281/zenodo.18028847)
-[![License](https://img.shields.io/github/license/datasnakes/htseq-count-cluster.svg)](https://github.com/datasnakes/htseq-count-cluster/blob/master/LICENSE)
-[![Documentation Status](https://readthedocs.org/projects/htseq-count-cluster/badge/?version=latest)](https://htseq-count-cluster.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18028846.svg)](https://doi.org/10.5281/zenodo.18028846)
+[![License](https://img.shields.io/github/license/datasnakes/htseq-count-cluster.svg)](https://github.com/datasnakes/htseq-count-cluster/blob/main/LICENSE)
 
+# HTSeqCountCluster
 
-# htseq-count-cluster
+HTSeqCountCluster submits [`htseq-count`](https://htseq.readthedocs.io/) jobs
+through PBS/Torque or a throttled Slurm array. It validates BAM paths, retains
+scheduler scripts and manifests, and merges count tables only when their gene
+identifiers and row order match.
 
-A cli wrapper for running [htseq](https://github.com/simon-anders/htseq)'s `htseq-count` on a cluster.
+The [documentation](https://datasnakes.github.io/htseq-count-cluster/), built
+with [Great Docs](https://posit-dev.github.io/great-docs/), covers scheduler
+behavior and 2.0 migration. The [changelog](CHANGELOG.md) summarizes each
+release.
 
-View [documentation](http://htseq-count-cluster.rtfd.io/).
+## Background
+
+This project grew from an [issue I opened on the HTSeq
+repository](https://github.com/simon-anders/htseq/issues/43) about using multiple
+cores to process many BAM files. That discussion inspired this approach: run one
+`htseq-count` job per sample in parallel, then merge the count tables.
 
 ## Install
 
-Requires Python 3.9 or higher.
+HTSeqCountCluster 2.0 requires Python 3.10 or newer and HTSeq 2.1 or newer.
 
 ```bash
-pip install HTSeqCountCluster
+python -m pip install HTSeqCountCluster
 ```
 
-## Features
+## Prepare inputs
 
-- For use with large datasets (we've previously used a dataset of 120 different human samples)
-- For use with SGE/SGI cluster systems
-- Submits multiple jobs
-- Command line interface/script
-- Merges counts files into one counts table/csv file
-- Uses `accepted_hits.bam` file output of `tophat`
+Create a two-column CSV manifest. Relative BAM paths resolve from the manifest
+directory.
 
+```csv
+sample_id,bam_path
+control-1,/data/aligned/control-1.bam
+treated-1,aligned/treated-1.bam
+```
 
-### Examples
+The batch environment must provide `htseq-count` and HTSeqCountCluster;
+environment-module configuration remains site-specific.
 
-#### Run htseq-count-cluster
+## Submit a Slurm array
 
-After generating bam output files from tophat, instead of using HTSeq's `htseq-count`, you
-can use our `htseq-count-cluster` script. This script is intended for use with
-clusters that are using pbs (qsub) for job monitoring.
-
-Our default `htseq-count` command is `htseq-count -f bam -s no file.bam file.gtf -o htseq.out`.
-This command does not take into account any strandedness (`-s no`) for the input bamfiles (`-f bam`) and uses the default `union` mode. For the default mode `union`, only the aligned read determines how the read pair is counted.
-
-**Legacy mode (still supported):**
 ```bash
-htseq-count-cluster -p path/to/bam-files/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
+htseq-count-cluster run \
+  --scheduler slurm \
+  --infile samples.csv \
+  --gtf genes.gtf \
+  --outpath counts \
+  --partition short \
+  --memory 4G \
+  --time 02:00:00 \
+  --max-concurrent 8
 ```
 
-**New subcommand mode:**
+## Submit PBS/Torque jobs
+
 ```bash
-htseq-count-cluster run -p path/to/bam-files/ -f samples.csv -g genes.gtf -o path/to/cluster-output/
+htseq-count-cluster run \
+  --scheduler pbs \
+  --infile samples.csv \
+  --gtf genes.gtf \
+  --outpath counts \
+  --partition batch \
+  --memory 4gb \
+  --time 02:00:00
 ```
 
-| Argument | Description | Required |
-|:--------:|:------------|:--------:|
-| `-p` | This is the path of your .bam files. Presently, this script looks for a folder that is the sample name and searches for an accepted_hits.bam file (tophat output). | Yes |
-| `-f` | You should have a csv file list of your samples or folder names (no header). | Yes |
-| `-g` | This should be the path to your genes.gtf file. | Yes |
-| `-o` | This should be an existing directory for your output counts files. | Yes |
-| `-e` | Email address to send script completion notifications to. | No |
+Use `--dry-run` to validate inputs and print the `sbatch` or `qsub` command
+without submitting. Submission files are retained for inspection.
 
-This script uses logzero so there will be color coded logging information to your shell.
+## Check status
 
-A common linux practice is to use `screen` to create a new shell and run a program
-so that if it does produce output to the stdout/shell, the user can exit that particular
-shell without the program ending and utilize another shell.
+Status checks do not poll:
 
-##### Help message output for `htseq-count-cluster`
-
-```text
-usage: htseq-count-cluster [-h] COMMAND ...
-
-This is a command line wrapper around htseq-count.
-
-positional arguments:
-  COMMAND
-    run                 Run htseq-count jobs on a cluster
-    merge               Merge multiple counts tables into one CSV file
-
-optional arguments:
-  -h, --help            show this help message and exit
-
-*Ensure that htseq-count is in your path.
-```
-
-For the `run` subcommand:
-
-```text
-usage: htseq-count-cluster run [-h] -p INPATH -f INFILE -g GTF -o OUTPATH [-e EMAIL]
-
-Submit multiple htseq-count jobs to a cluster.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -p INPATH, --inpath INPATH
-                        Path of your samples/sample folders.
-  -f INFILE, --infile INFILE
-                        Name or path to your input csv file.
-  -g GTF, --gtf GTF     Name or path to your gtf/gff file.
-  -o OUTPATH, --outpath OUTPATH
-                        Directory of your output counts file. The counts file
-                        will be named.
-  -e EMAIL, --email EMAIL
-                        Email address to send script completion to.
-```
-
-
-#### Merge output counts files
-
-In order to prep your data for `DESeq2`, `limma` or `edgeR`, it's best to have 1 merged
-counts file instead of multiple files produced from the `htseq-count-cluster` script. 
-
-**Using the merge subcommand:**
 ```bash
-htseq-count-cluster merge -d path/to/cluster-output/
+htseq-count-cluster status --scheduler slurm 12345678
+htseq-count-cluster status --scheduler pbs 12345.server
 ```
 
-**Or using the standalone command (still available):**
+## Merge count tables
+
 ```bash
-merge-counts -d path/to/cluster-output/
+htseq-count-cluster merge --directory counts
 ```
 
-##### Help message for `merge` subcommand
+This writes `counts/merged_counts_table.csv` and rejects duplicate gene
+identifiers or inconsistent gene order.
 
-```text
-usage: htseq-count-cluster merge [-h] -d DIRECTORY
+## Build the documentation
 
-Merge multiple counts tables into 1 counts .csv file.
+[Great Docs](https://posit-dev.github.io/great-docs/) requires Python 3.11 or
+newer and [Quarto](https://quarto.org/docs/get-started/).
 
-Your output file will be named:  merged_counts_table.csv
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -d DIRECTORY, --directory DIRECTORY
-                        Path to folder of counts files.
+```bash
+python -m pip install -e ".[docs]"
+great-docs build --no-refresh
 ```
 
-## ToDo
-
-- [ ] Monitor jobs.
-- [ ] Enhance wrapper input for other use cases.
-- [ ] Add example data.
-
+The generated site is written to `great-docs/_site/`; `great-docs/` is
+ephemeral and ignored.
 
 ## Maintainers
 
-Shaurita Hutchins | [@sdhutchins](https://github.com/sdhutchins) | [✉](mailto:sdhutchins@outlook.com)  
-Rob Gilmore | [@grabear](https://github.com/grabear) | [✉](mailto:robgilmore127@gmail.com)
+Shaurita Hutchins ([@sdhutchins](https://github.com/sdhutchins)) and Robert
+Gilmore ([@grabear](https://github.com/grabear)).
+
+## Citations
+
+Cite HTSeqCountCluster and HTSeq when using this package.
+
+### HTSeqCountCluster
+
+Hutchins, S. D. (2025). *HTSeqCountCluster* [Computer software]. Zenodo.
+[https://doi.org/10.5281/zenodo.18028846](https://doi.org/10.5281/zenodo.18028846)
 
 
-## Help
+### HTSeq
 
-Please feel free to [open an issue](https://github.com/datasnakes/htseq-count-cluster/issues/new) if you have a question/feedback/problem
-or [submit a pull request](https://github.com/datasnakes/htseq-count-cluster/compare) to add a feature/refactor/etc. to this project.
-
-## Citation
-
-*Simon Anders, Paul Theodor Pyl, Wolfgang Huber; **HTSeq—a Python framework to work with high-throughput sequencing data**, Bioinformatics, Volume 31, Issue 2, 15 January 2015, Pages 166–169, https://doi.org/10.1093/bioinformatics/btu638*
+Anders, S., Pyl, P. T., & Huber, W. (2015). HTSeq—a Python framework to work
+with high-throughput sequencing data. *Bioinformatics, 31*(2), 166–169.
+[https://doi.org/10.1093/bioinformatics/btu638](https://doi.org/10.1093/bioinformatics/btu638)

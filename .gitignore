@@ -61,7 +61,9 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
+# Great Docs generates this directory from committed source files.
+great-docs/
+# Ignore any local artifacts left by the retired Sphinx build.
 docs/_build/
 
 # PyBuilder
