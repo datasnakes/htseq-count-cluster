@@ -3,8 +3,10 @@ title: PBS and Torque
 description: Submit one HTSeq job per sample with qsub.
 ---
 
-PBS/Torque submits one `qsub` script per sample. Jobs retain independent
-identifiers and logs while using the Slurm manifest format.
+On PBS/Torque, each sample becomes its own `qsub` job. The jobs retain
+independent identifiers and logs.
+
+They share the scheduler-neutral manifest format used by the Slurm backend.
 
 ```bash
 htseq-count-cluster run \
@@ -17,11 +19,15 @@ htseq-count-cluster run \
   --time 02:00:00
 ```
 
-For PBS, `--partition` is passed to `qsub -q` as the queue name and `--account`
-is passed to `qsub -A`. Resource syntax varies among PBS-family installations;
-use `--dry-run` to compare the printed command with the cluster documentation.
-HTSeqCountCluster requests resources with
-`select=1:ncpus=<N>:mem=<MEMORY>` and a separate `walltime=<TIME>` value.
+HTSeqCountCluster maps its options to PBS arguments:
+
+- `--partition` becomes the `qsub -q` queue name.
+- `--account` becomes the `qsub -A` account.
+- CPU and memory use `select=1:ncpus=<N>:mem=<MEMORY>`.
+- Time uses a separate `walltime=<TIME>` value.
+
+Resource syntax varies among PBS-family installations. Use `--dry-run` and
+compare the generated command with the cluster documentation.
 
 ## Check status once
 
@@ -29,5 +35,7 @@ HTSeqCountCluster requests resources with
 htseq-count-cluster status --scheduler pbs 12345.server
 ```
 
-The command runs `qstat -f` once and normalizes the PBS state. A job absent from
-the site's `qstat` history is `Unknown`; absence does not establish success.
+The command runs `qstat -f` once and normalizes the PBS state.
+
+If the job is absent from the site's `qstat` history, the result is `Unknown`.
+Absence alone does not establish success.

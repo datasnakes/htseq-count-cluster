@@ -3,16 +3,27 @@ title: Merge count tables
 description: Combine per-sample HTSeq outputs for downstream analysis.
 ---
 
-After all tasks finish successfully, merge the count tables:
+Each scheduler task produces a separate count table. After every task finishes
+successfully, merge those tables for downstream analysis:
 
 ```bash
 htseq-count-cluster merge --directory counts
 ```
 
-The output, `counts/merged_counts_table.csv`, begins with `Genes`, followed by
-sample columns sorted by count-table filename.
+The command writes `counts/merged_counts_table.csv` with:
 
-Each `*.counts.tsv` file requires two tab-separated columns, unique gene
-identifiers, and identical gene order. Mismatches stop the merge, preventing
-missing or misaligned counts. HTSeq summary rows such as `__no_feature` remain
-for downstream assignment-quality checks.
+- `Genes` as the first column;
+- sample columns sorted by count-table filename.
+
+Before writing the merged file, HTSeqCountCluster checks that each
+`*.counts.tsv` file has:
+
+- two tab-separated columns;
+- unique gene identifiers; and
+- the same gene order as every other count table.
+
+A mismatch stops the merge instead of silently pairing counts with the wrong
+genes.
+
+HTSeq summary rows such as `__no_feature` remain available for downstream
+assignment-quality checks.

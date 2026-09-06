@@ -1,5 +1,5 @@
 [![Build Status](https://github.com/datasnakes/htseq-count-cluster/actions/workflows/package-build.yml/badge.svg?branch=main)](https://github.com/datasnakes/htseq-count-cluster/actions/workflows/package-build.yml)
-[![Documentation](https://github.com/datasnakes/htseq-count-cluster/actions/workflows/docs.yml/badge.svg?branch=main)](https://datasnakes.github.io/htseq-count-cluster/)
+[![Documentation](https://img.shields.io/website?url=https%3A%2F%2Fdatasnakes.github.io%2Fhtseq-count-cluster%2F&label=docs)](https://datasnakes.github.io/htseq-count-cluster/)
 [![PyPI version](https://img.shields.io/pypi/v/HTSeqCountCluster.svg)](https://pypi.org/project/HTSeqCountCluster/)
 [![Python versions](https://img.shields.io/pypi/pyversions/HTSeqCountCluster.svg)](https://pypi.org/project/HTSeqCountCluster/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18028846.svg)](https://doi.org/10.5281/zenodo.18028846)

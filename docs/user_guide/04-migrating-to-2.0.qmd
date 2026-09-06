@@ -3,7 +3,11 @@ title: Migrating to 2.0
 description: Update manifests and commands from the legacy PBS-only interface.
 ---
 
-Version 2.0 removes legacy layers that obscured input and output paths.
+Version 2.0 makes a deliberate break from the implicit paths and embedded PBS
+machinery used by earlier releases.
+
+Inputs, outputs, and scheduler choices are now visible in the command or
+manifest.
 
 ## Required changes
 
@@ -18,9 +22,18 @@ Version 2.0 removes legacy layers that obscured input and output paths.
 
 ## Scheduler behavior
 
-The embedded PBS template and polling helper are removed. PBS commands are
-generated directly, and status checks run once. Slurm uses one array job with
-optional `--max-concurrent` throttling.
+After updating the command and manifest, confirm the scheduler behavior:
 
-Use `--dry-run` before submitting at each cluster site. It validates inputs and
-prints the scheduler command without consuming allocation resources.
+- The embedded PBS template and polling helper are removed.
+- PBS commands are generated directly.
+- Status checks run once instead of polling.
+- Slurm uses one array job with optional `--max-concurrent` throttling.
+
+Finish the migration with `--dry-run` at each cluster site. It:
+
+- validates the inputs;
+- prints the scheduler command; and
+- does not consume allocation resources.
+
+The result gives you a concrete command to compare with local scheduler policy
+before the first 2.0 submission.

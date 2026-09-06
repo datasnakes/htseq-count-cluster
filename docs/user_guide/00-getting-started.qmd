@@ -3,15 +3,20 @@ title: Getting started
 description: Install HTSeqCountCluster and prepare an explicit sample manifest.
 ---
 
-HTSeqCountCluster submits one `htseq-count` task per BAM file to Slurm or
-PBS/Torque. Version 2.0 requires Python 3.10 or newer and HTSeq 2.1 or newer.
+Counting many BAM files one at a time requires repeated manual submissions.
+HTSeqCountCluster instead submits one `htseq-count` task per BAM file to Slurm
+or PBS/Torque. Version 2.0 requires Python 3.10 or newer and HTSeq 2.1 or newer.
 
-## Project origin
+## Background
 
-This project grew from an [issue I opened on the HTSeq
-repository](https://github.com/simon-anders/htseq/issues/43) about using multiple
-cores to process many BAM files. That discussion inspired this approach: run one
-`htseq-count` job per sample in parallel, then merge the count tables.
+HTSeqCountCluster began with a problem I ran into while working with many BAM
+files. I wanted a simple way to use more than one core without managing every
+count job by hand, so I opened an [issue on the HTSeq
+repository](https://github.com/simon-anders/htseq/issues/43) to ask about it.
+
+That conversation sparked this project. The idea is straightforward: give each
+sample its own `htseq-count` job, then bring the results together in one count
+table.
 
 ## Install
 
@@ -19,8 +24,13 @@ cores to process many BAM files. That discussion inspired this approach: run one
 python -m pip install HTSeqCountCluster
 ```
 
-The batch environment must provide `htseq-count` and HTSeqCountCluster;
-environment-module configuration remains site-specific.
+The installation provides the command-line interface. Each batch task must run
+in an environment that also provides:
+
+- `htseq-count`
+- HTSeqCountCluster
+
+How you configure that environment remains site-specific.
 
 ## Prepare a sample manifest
 
@@ -32,14 +42,23 @@ control-1,/data/rnaseq/control-1.bam
 treated-1,alignments/treated-1.bam
 ```
 
+The two columns have separate roles:
+
+- `sample_id` is the sample identifier.
+- `bam_path` locates the alignment file.
+
 Relative BAM paths resolve from the manifest directory. Sample identifiers must
-be unique and cannot contain directory separators. Each task writes
-`<sample_id>.counts.tsv` to the output directory.
+be unique and cannot contain directory separators.
+
+Each task writes `<sample_id>.counts.tsv` to the output directory.
 
 ## Preview before submitting
 
-Dry runs validate the manifest, BAM files, and annotation and write scheduler
-scripts without calling `sbatch` or `qsub`:
+Before using cluster resources, run the same request as a dry run. A dry run:
+
+- validates the manifest, BAM files, and annotation;
+- writes the scheduler scripts; and
+- does not call `sbatch` or `qsub`.
 
 ```bash
 htseq-count-cluster run \
@@ -50,5 +69,7 @@ htseq-count-cluster run \
   --outpath counts
 ```
 
-Submission metadata remains under
-`counts/.htseq-count-cluster/<submission-name>/` for provenance and diagnosis.
+Review the generated command and scripts before submitting.
+
+The files remain under `counts/.htseq-count-cluster/<submission-name>/`. They
+preserve the inputs needed to understand or diagnose the job later.
