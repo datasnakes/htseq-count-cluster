@@ -65,7 +65,6 @@ setup(
     entry_points={
         'console_scripts': [
                 'htseq-count-cluster=HTSeqCountCluster.htseq_count_cluster:main',
-                'merge-counts=HTSeqCountCluster.mergecounts:main'
                 ]
     },
     zip_safe=False,

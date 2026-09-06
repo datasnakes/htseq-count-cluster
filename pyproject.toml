@@ -48,7 +48,6 @@ Website = "https://tinyurl.com/yb7kz7zz"
 
 [project.scripts]
 htseq-count-cluster = "HTSeqCountCluster.htseq_count_cluster:main"
-merge-counts = "HTSeqCountCluster.mergecounts:main"
 
 [tool.setuptools]
 # Auto-discover packages (equivalent to find_packages() in setup.py)
