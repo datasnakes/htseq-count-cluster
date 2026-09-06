@@ -1,0 +1,101 @@
+display_name: HTSeqCountCluster
+repo: https://github.com/datasnakes/htseq-count-cluster
+site_url: https://datasnakes.github.io/htseq-count-cluster/
+parser: numpy
+dynamic: true
+user_guide: docs/user_guide
+
+site:
+  theme: flatly
+  toc: true
+  toc-depth: 3
+  html-math-method: katex
+
+source:
+  branch: main
+
+hero:
+  enabled: true
+  name: HTSeqCountCluster
+  tagline: Submit reproducible HTSeq count jobs to PBS/Torque or Slurm.
+  badges: auto
+  starfield: false
+
+accent_color:
+  light: "#2F6B45"
+  dark: "#8BC49C"
+
+navbar_color:
+  light: "#174D35"
+  dark: "#0D2818"
+
+navbar_order:
+  - User Guide
+  - Reference
+  - Changelog
+
+nav_icons:
+  navbar:
+    User Guide: book-open
+    Reference: code-2
+    Changelog: history
+  sidebar:
+    Getting started: rocket
+    Slurm arrays: server
+    PBS and Torque: terminal
+    Merge count tables: table
+    Migrating to 2.0: refresh-cw
+
+dark_mode_toggle: true
+keyboard_nav: true
+back_to_top: true
+
+sidebar_filter:
+  enabled: true
+  min_items: 8
+
+markdown_pages:
+  enabled: true
+  widget: true
+
+changelog:
+  enabled: true
+  max_releases: 50
+
+mcp:
+  enabled: false
+
+seo:
+  enabled: true
+  canonical:
+    enabled: true
+    base_url: https://datasnakes.github.io/htseq-count-cluster/
+  structured_data:
+    enabled: true
+    type: SoftwareSourceCode
+
+authors:
+  - name: Shaurita Hutchins
+    role: Maintainer
+    github: sdhutchins
+  - name: Robert Gilmore
+    role: Maintainer
+    github: grabear
+
+reference:
+  desc: >-
+    Public Python interfaces for defining sample jobs, requesting scheduler
+    resources, selecting a scheduler backend, and merging HTSeq count tables.
+  sections:
+    - title: Submission models
+      contents:
+        - name: SampleJob
+          members: false
+        - name: JobResources
+          members: false
+        - name: SubmissionResult
+          members: false
+    - title: Scheduler and merge helpers
+      contents:
+        - name: get_scheduler
+        - name: merge_counts_tables

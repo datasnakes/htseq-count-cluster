@@ -1,0 +1,18 @@
+---
+title: Merge count tables
+description: Combine per-sample HTSeq outputs for downstream analysis.
+---
+
+After all tasks finish successfully, merge the count tables:
+
+```bash
+htseq-count-cluster merge --directory counts
+```
+
+The output, `counts/merged_counts_table.csv`, begins with `Genes`, followed by
+sample columns sorted by count-table filename.
+
+Each `*.counts.tsv` file requires two tab-separated columns, unique gene
+identifiers, and identical gene order. Mismatches stop the merge, preventing
+missing or misaligned counts. HTSeq summary rows such as `__no_feature` remain
+for downstream assignment-quality checks.

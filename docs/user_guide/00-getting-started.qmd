@@ -1,0 +1,54 @@
+---
+title: Getting started
+description: Install HTSeqCountCluster and prepare an explicit sample manifest.
+---
+
+HTSeqCountCluster submits one `htseq-count` task per BAM file to Slurm or
+PBS/Torque. Version 2.0 requires Python 3.10 or newer and HTSeq 2.1 or newer.
+
+## Project origin
+
+This project grew from an [issue I opened on the HTSeq
+repository](https://github.com/simon-anders/htseq/issues/43) about using multiple
+cores to process many BAM files. That discussion inspired this approach: run one
+`htseq-count` job per sample in parallel, then merge the count tables.
+
+## Install
+
+```bash
+python -m pip install HTSeqCountCluster
+```
+
+The batch environment must provide `htseq-count` and HTSeqCountCluster;
+environment-module configuration remains site-specific.
+
+## Prepare a sample manifest
+
+Create a two-column CSV file:
+
+```csv
+sample_id,bam_path
+control-1,/data/rnaseq/control-1.bam
+treated-1,alignments/treated-1.bam
+```
+
+Relative BAM paths resolve from the manifest directory. Sample identifiers must
+be unique and cannot contain directory separators. Each task writes
+`<sample_id>.counts.tsv` to the output directory.
+
+## Preview before submitting
+
+Dry runs validate the manifest, BAM files, and annotation and write scheduler
+scripts without calling `sbatch` or `qsub`:
+
+```bash
+htseq-count-cluster run \
+  --scheduler slurm \
+  --dry-run \
+  --infile samples.csv \
+  --gtf genes.gtf \
+  --outpath counts
+```
+
+Submission metadata remains under
+`counts/.htseq-count-cluster/<submission-name>/` for provenance and diagnosis.

@@ -1,0 +1,26 @@
+---
+title: Migrating to 2.0
+description: Update manifests and commands from the legacy PBS-only interface.
+---
+
+Version 2.0 removes legacy layers that obscured input and output paths.
+
+## Required changes
+
+- Add the `run` subcommand. The pre-2.0 no-subcommand invocation is removed.
+- Replace one-column sample lists and TopHat `accepted_hits.bam` discovery with
+  an explicit `sample_id,bam_path` CSV manifest.
+- Replace the standalone `merge-counts` executable with
+  `htseq-count-cluster merge`.
+- Update environments to Python 3.10 or newer and HTSeq 2.1 or newer.
+- Expect count outputs named `<sample_id>.counts.tsv`; historical `.out` files
+  are no longer discovered by the merge command.
+
+## Scheduler behavior
+
+The embedded PBS template and polling helper are removed. PBS commands are
+generated directly, and status checks run once. Slurm uses one array job with
+optional `--max-concurrent` throttling.
+
+Use `--dry-run` before submitting at each cluster site. It validates inputs and
+prints the scheduler command without consuming allocation resources.
